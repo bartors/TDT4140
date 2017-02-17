@@ -6,7 +6,7 @@
     $email = $_POST['email'];
         $password = $_POST['password'];
  
-        $query = "INSERT INTO `user` (username, password, email) VALUES ('$username', '$password', '$email')";
+        $query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'S')";
         $result = mysqli_query($connection, $query);
         if($result){
             $smsg = "User Created Successfully.";
