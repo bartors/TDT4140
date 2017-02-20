@@ -5,8 +5,13 @@
         $username = $_POST['username'];
     $email = $_POST['email'];
         $password = $_POST['password'];
- 
-        $query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'S')";
+        
+        if(teacher){
+        	$query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'T')";
+        	 
+        }else{
+ 		 	$query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'S')";
+        }
         $result = mysqli_query($connection, $query);
         if($result){
             $smsg = "User Created Successfully.";
@@ -48,7 +53,7 @@
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" value="teacher"> Jeg vil være lærer
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
