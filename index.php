@@ -38,17 +38,20 @@ echo "<b>
 // One of the mysql result functions must be used
 // See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
 while ($row = mysqli_fetch_assoc($result)) {
-    //echo $row['userid'].'<br>';
+    echo $row['userid'].'<br>';
+    $_SESSION['userid']=$row['userid'];
     echo $row['username'].'<br>';
     echo $row['email'].'<br>';
     echo $row['password'].'<br>';
 echo $row['active'].'<br>';
 echo $row['role'].'<br>';
+$_SESSION['role']=$row['role'];
+}
 
 // Free the resources associated with the result set
 // This is done automatically at the end of the script
 mysql_free_result($result);
-}
+
  
 }else{
 //3.2 When the user visits the page first time, simple login form will be displayed.
