@@ -24,35 +24,9 @@ $fmsg = "Invalid Login Credentials.";
 }
 //3.1.4 if the user is logged in Greets the user with message
 if (isset($_SESSION['username'])){
-$username = $_SESSION['username'];
-echo "Hei " . $username.".";
-echo "<p>This is the Members Area";
-echo "<p><a href='logout.php'>Logout</a>";
-echo "<p><a href='test.php'>Test</a>";
-echo "<b>
-<center>Database Output</center>
-</b>
-";
-// Use result
-// Attempting to print $result won't allow access to information in the resource
-// One of the mysql result functions must be used
-// See also mysql_result(), mysql_fetch_array(), mysql_fetch_row(), etc.
-while ($row = mysqli_fetch_assoc($result)) {
-    echo $row['userid'].'<br>';
-    $_SESSION['userid']=$row['userid'];
-    echo $row['username'].'<br>';
-    echo $row['email'].'<br>';
-    echo $row['password'].'<br>';
-echo $row['active'].'<br>';
-echo $row['role'].'<br>';
-$_SESSION['role']=$row['role'];
-}
+	//Dicrect to main page
+	header('Location:classMate.php');
 
-// Free the resources associated with the result set
-// This is done automatically at the end of the script
-mysql_free_result($result);
-
- 
 }else{
 //3.2 When the user visits the page first time, simple login form will be displayed.
 ?>
