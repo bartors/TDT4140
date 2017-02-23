@@ -20,7 +20,7 @@ if(isset($_POST['classname'])){
 	$result = mysqli_query($connection, $query) or die(mysqli_error($connection));
 	unset($classname);
 	unset($_POST['classname']);
-	header('Location:makeClass.php');
+	header('Location:madeClass.php');
 }
 
 
