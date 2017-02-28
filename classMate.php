@@ -22,7 +22,8 @@ if($role=='T'){
 	echo "<p><a href='makeClass.php'>New Class</a><br>";
 }
 //
-echo"<p><a href='attendClass.php'>Sing into a class</a><br>";
+echo"<a href='attendClass.php'>Sing into a class</a><br>";
+//echo"<a href='changePass.php'>Change Password</a>";
 echo "<a href='logout.php'>Logout</a>";
 
 ?></body></html>

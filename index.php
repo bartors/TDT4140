@@ -12,7 +12,11 @@ $query = "SELECT * FROM `users` WHERE username='$username' and password='$passwo
  
 $result = mysqli_query($connection, $query) or die(mysqli_error($connection));
 $count = mysqli_num_rows($result);
-
+while ($row = mysqli_fetch_assoc($result)) {
+	$_SESSION['role']=$row['role'];
+	$role=$_SESSION['role'];
+	$_SESSION['userid']=$row['userid'];
+}
 //3.1.2 If the posted values are equal to the database values, then session will be created for the user.
 if ($count == 1){
 $_SESSION['username'] = $username;
@@ -24,8 +28,11 @@ $fmsg = "Invalid Login Credentials.";
 }
 //3.1.4 if the user is logged in Greets the user with message
 if (isset($_SESSION['username'])){
-	//Dicrect to main page
-	header('Location:classMate.php');
+	if($role=='T'){
+	header('Location:mainAsTeacher.php');
+}else{
+header('Location:mainAsStudent.php');
+}
 
 }else{
 //3.2 When the user visits the page first time, simple login form will be displayed.

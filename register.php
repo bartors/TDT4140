@@ -6,7 +6,7 @@
    		$email = $_POST['email'];
         $password = $_POST['password'];
         
-        if(teacher){
+        if($_POST['teacher']){
         	$query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'T')";
         	 
         }else{
@@ -18,7 +18,14 @@
         }else{
             $fmsg ="User Registration Failed";
         }
+        unset($_POST['username']);
+        unset($_POST['email']);
+        unset($_POST['password']);
+        unset($_POST['teacher']);
+        
+        //header('Location:index.php');
     }
+   
     ?>
 <html>
 <head>
@@ -53,7 +60,7 @@
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
-            <input type="checkbox" value="teacher"> Jeg vil være lærer
+            <input type="checkbox" name="teacher" id="teacher" checked="true"> Jeg vil være lærer
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
