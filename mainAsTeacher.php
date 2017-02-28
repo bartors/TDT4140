@@ -6,8 +6,11 @@ require 'connect.php';
 $username=$_SESSION['username'];
 $password=$_SESSION['password'];
 $role=$_SESSION['role'];
+$userid=$_SESSION['userid'];
+
 //setter opp query for å hente info om brukeren
 $query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +67,7 @@ $query = "SELECT * FROM `users` WHERE username='$username' and password='$passwo
                     <li class="#page-scroll">
                         <a href="#profil">Min bruker</a>
                     <li class="#page-scroll">
-                        <a href="#subject">Mitt fag</a>
+                        <?php echo"<a href='makeClass.php'>Mine fag</a>"?>
                     <li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
                     </li>
@@ -89,6 +92,7 @@ $query = "SELECT * FROM `users` WHERE username='$username' and password='$passwo
                     <p>Something</p>
                         <li>Heihei</li>
                         <li>Hoho</li>
+                         <?php echo"<li>Ditt username is".$username." og userid is ".$userid."</li>";?>
                 </div>
                 <div class="footer-col col-md-4">
                     <p>Something2</p>

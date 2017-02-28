@@ -15,6 +15,7 @@ $count = mysqli_num_rows($result);
 while ($row = mysqli_fetch_assoc($result)) {
 	$_SESSION['role']=$row['role'];
 	$role=$_SESSION['role'];
+	$_SESSION['userid']=$row['userid'];
 }
 //3.1.2 If the posted values are equal to the database values, then session will be created for the user.
 if ($count == 1){
