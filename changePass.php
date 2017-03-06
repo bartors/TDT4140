@@ -1,6 +1,6 @@
 <?php
-session_start();
+session_start ();
 require 'connect.php';
-$userid = $_SESSION['userid'];
+$userid = $_SESSION ['userid'];
 
 ?>
