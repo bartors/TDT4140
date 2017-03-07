@@ -9,9 +9,11 @@ $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
 
 //setter opp query for å hente info om brukeren
-$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
 $classname=$_GET['id'];
 $_SESSION['classname']=$classname;
+$showQuizes="SELECT qid,name from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
+$quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $connection ) );
+$count = mysqli_num_rows ( $quizes );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,15 +95,24 @@ $_SESSION['classname']=$classname;
                     <div class="panel panel-default" style="width:100%;">
                         <div class="panel-heading">Create questions and quizzes</div>
                         <div class="panel-body">
-                            <a href="createQuestion.php">Create Question</a></br>
-                            <a href="createQuiz.php">Create Quiz</a></br>
+                            <a href="createQuiz.php">Create Quiz</a>
                         </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
-                    <div class="panel-heading">My quizzes</div>
-                    <div class="panel-body"><a href="quizPage.php">a quiz</a>
+                    <div class="panel-heading">Course quizzes</div>
+                    <div class="panel-body">
+                    <?php 
+						if ($count > 0) {
+						while ( $row = mysqli_fetch_array ( $quizes ) ) {
+							echo  "<a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a></br>";
+						}
+						} else {
+								echo "Du har ingen quizer.</br>";
+						}?>
+                    
+                    <a href="quizPage.php">a quiz</a>
                     </div>
                 </div>
             </div>
@@ -110,7 +121,7 @@ $_SESSION['classname']=$classname;
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
                     <div class="panel-heading">Statistics</div>
-                    <div class="panel-body">Show statistics for the course here
+                    <div class="panel-body"><a href="statisticsTeacher.php">Statistics for a quiz</a> 67%(a percentage for how well the students have done this quiz. Lowest percentage at the top of the list)
                 </div>
             </div>
         </div>

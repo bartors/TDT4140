@@ -116,48 +116,26 @@ $count = mysqli_num_rows ( $classes );
 				</div>
 			</div>
 			</br>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">My Courses</div>
-						<form class="form-signin" method="POST">
-							<div class="panel-body">
-								<?php 
-						if ($count > 0) {
-						while ( $row = mysqli_fetch_array ( $classes ) ) {
-							echo  "<a href='coursePageStudent.php?id=".$row['classname']."'>".$row ['classname'] ."</a></br>";
-						}
-						} else {
-								echo "Du har ingen klasser.</br>";
-						}?></br>
-								</br>
-								</br> <input class="addCourseInput" type="text" name="classname"
-									placeholder="Course name">&nbsp
-								<button class="btn btn-default" type="submit"
-									style="height: 30px;">Add course</button>
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">My Quizzes</div>
-						<div class="panel-body">
-							<a href="quizPage.php">Spaced-repetion quiz for you</a></br>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-md-4">
-					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Statistics</div>
-						<div class="panel-body">
-							<a href="statisticsStudent.php">Statistics for a quiz</a> 67%(a percentage for how well the students have done this quiz. Lowest percentage at the top of the list)
-						</div>
-					</div>
-				</div>
-			</div>
+			            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default" style="width:100%;">
+                        <div class="panel-heading">"Name of quiz" + "percentage for whole quiz"</div>
+                        <div class="panel-body">
+                            "question 1" + "wrong or correct"</br>
+                            "question 2" + "wrong or correct"</br>
+                            "question 3" + "wrong or correct"</br>
+                        </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default" style="width:100%;">
+                        <div class="panel-heading">Options</div>
+                        <div class="panel-body">
+                            <a href="quizPage.php">Do this quiz again</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
 
 

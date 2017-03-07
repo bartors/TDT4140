@@ -7,9 +7,16 @@ $username=$_SESSION['username'];
 $password=$_SESSION['password'];
 $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
-
-//setter opp query for å hente info om brukeren
-$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
+$classname=$_SESSION['classname'];
+$qid=$_GET['id'];
+//setter opp query for å hente info om quizen
+$showQuizName="select name from quiz where qid='$qid'";
+$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
+$count= mysqli_num_rows ( $result );
+if($count==1){
+	$row = mysqli_fetch_array ( $result );
+	$quizName=$row['name'];
+}
 
 ?>
 <!DOCTYPE html>
@@ -83,7 +90,7 @@ $query = "SELECT * FROM `users` WHERE username='$username' and password='$passwo
         <div class="container">
             <div class="row ">
             <div class="col-lg-12">
-                    <h2>"QuizName"</h2>
+                  <?php   echo "<h2>".$quizName."</h2>";?>
                     </br>
                 <form action="grade.php" method="post" id="quiz">
         

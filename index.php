@@ -2,6 +2,33 @@
 // Start the Session
 session_start ();
 require ('connect.php');
+ini_set('display_errors', 1);
+
+//PASSWORD RECOVERY
+if (isset($_POST['email'])) {
+	$email = $_POST['email'];
+	$query = mysqli_query($connection, "SELECT * FROM users WHERE email='".$email."'");
+	if(mysqli_num_rows($query) == 1){
+		while ($row = mysqli_fetch_assoc($query)) {
+		    $sendUsername = $row['username'];
+		    $sendPassword = $row['password'];
+		}
+		//Email sender
+		$to = $email;
+		$subject = "Password reminder";
+		$txt = "Hello " . $sendUsername . "!\nYour password is: " . $sendPassword;
+		$headers = "From: noreply@classmate.com" . "\r\n";
+		mail($to,$subject,$txt,$headers);
+	}
+	else{
+		// do something
+		if (!mysqli_query($connection,$query)){
+		    die('Error: ' . mysqli_error($connection));
+		}
+	}
+}
+
+
 // 3. If the form is submitted or not.
 // 3.1 If the form is submitted
 if (isset ( $_POST ['username'] ) and isset ( $_POST ['password'] )) {
@@ -41,16 +68,14 @@ if (isset ( $_SESSION ['username'] )) {
 <head>
 <title>ClassMate</title>
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="index.css">
-
-<!-- Latest compiled and minified JavaScript -->
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="index.css">
+ 
 </head>
 <body>
 
@@ -71,11 +96,36 @@ if (isset ( $_SESSION ['username'] )) {
 						<button class="submitBtn" type="Submit" id="submitBtn">Log In</button>
 					</div>
 				</form>
-				<div class="buttonHolder">
-					<a href="register.php" id="regLink">Register</a>
-					<p>-</p>
-					<a href="#" id="forgotLink">Forgot Password</a>
-				</div>
+				<a href="register.php" id="regLink">Register</a>
+		<p style="color: #fff;font-size: 12px;display: inline;">-</p>
+
+
+<!-- Her er glemt passord knasten -->
+
+		<a href="" data-toggle="modal" data-target="#myModal">Forgot Password</a>
+
+  <!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+		    <div class="modal-dialog modal-sm" style="vertical-align: middle;">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">Password recovery</h4>
+		        </div>
+		        <div class="modal-body">
+		          <form class="inputs" method="POST">
+		          	<input type="email" name="email" placeholder="E-Mail Address" class="form-control" required>
+		          	<button type="Submit" id="submitBtn" style="min-width: 100%;height: 40px;">Send Password</button>
+		          </form>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+
+<!-- her sluttern -->
 			</div>
 		</div>
 	</div>

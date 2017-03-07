@@ -1,27 +1,30 @@
 <?php
-
-session_start();
+session_start ();
 require 'connect.php';
-//setter lokale variabler utifraa session's variabler
-$username=$_SESSION['username'];
-$password=$_SESSION['password'];
-$role=$_SESSION['role'];
-$userid=$_SESSION['userid'];
-$classname=$_SESSION['classname'];
-$query = "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')";
-$questions = mysqli_query ( $connection, $query ) or die ( mysqli_error ( $connection ) );
-mysqli_close();
-$count = mysqli_num_rows ( $questions );
-$quizName=$_POST['quizName'];
+// setter lokale variabler utifraa session's variabler
+$username = $_SESSION ['username'];
+$password = $_SESSION ['password'];
+$role = $_SESSION ['role'];
+$userid = $_SESSION ['userid'];
 
+// setter opp query for å hente info om brukeren
+//$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
+// Setter lokale variaber utifra de globale
+$userid = $_SESSION ['userid'];
+// Sjekker om inputen ble sendt
+$showClasses = "SELECT * FROM class WHERE creator='$userid'";
+$classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
+$count = mysqli_num_rows ( $classes );
 
-if ( isset ( $quizName ) ) {
-	
-	$createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
-	$result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
-	mysqli_close();
-	header('Location:coursePageTeacher.php?id='.$classname);
-	
+if (isset ( $_POST ['classname'] )) {
+	// legger til ny row i class tabellen i databasen
+	$classname = $_POST ['classname'];
+	$makeClass = "INSERT INTO class(classname, creator) values('$classname','$userid')";
+	$result = mysqli_query ( $connection, $makeClass ) or die ( mysqli_error ( $connection ) );
+	// setter classname variablene til empty og sender til neste side
+	unset ( $classname );
+	unset ( $_POST ['classname'] );
+	header ( 'Location:madeClass.php' );
 }
 
 ?>
@@ -75,7 +78,7 @@ if ( isset ( $quizName ) ) {
 						class="fa fa-bars"></i>
 				</button>
 				<ul class="nav navbar-nav">
-					<a class="navbar-brand" href="mainAsTeacher.php"><img
+					<a class="navbar-brand" href="index.php"><img
 						src="img/classmateCleanLogo.svg" width="100%"
 						style="vertical-align: top;"></a>
 					</li>
@@ -87,7 +90,7 @@ if ( isset ( $quizName ) ) {
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username." ".$quizName;?></a>
+					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username;?></a>
 					
 					<li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
@@ -99,60 +102,39 @@ if ( isset ( $quizName ) ) {
 		<!-- /.container-fluid -->
 	</nav>
 
-	<!-- Header -->
-	<section id="profil">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-12 text-center">
-					<h2>New Quiz</h2>
-					</br>
-				</div>
-			</div>
-			</br>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Added questions</div>
-						<form class="form-signin" method="POST">
-							<div class="panel-body">
-								<input class="addCourseInput" type="text" name="quizName" required
-									placeholder="Name of quiz"></br> <a href="createQuestion.php"
-									class="btn btn-default">Create new question</a></br>
-								</br> 1. "a question"</br>
-								</br>
-								<button class="btn btn-default" type="submit">Create quiz</button>
-							</div>
-						</form>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Choose a topic to find questions</div>
-						<div class="panel-body">
-							<a href="#">a topic</a>
-						</div>
-					</div>
-				</div>
-
-
-				<div class="col-md-4">
-					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Press a question to add it to your quiz</div>
-						<div class="panel-body"><?php 
-						if ($count > 0) {
-						while ( $row = mysqli_fetch_array ( $questions ) ) {
-							echo  $row ['question'] ."</br>";
-						}
-						} else {
-								echo "Det finnes ingen spørsmål.</br>";
-						}?>
+	    <!-- Header -->
+    <section id="profil">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                   <?php  Echo'<h2>Statistics - '. $classname.'</h2>'?>
                 </div>
-					</div>
-				</div>
-
-
-			</div>
-		</div>
+            </div>
+            </br>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="panel panel-default" style="width:100%;">
+                        <div class="panel-heading">"Name of quiz" + "percentage for whole quiz"</div>
+                        <div class="panel-body">
+                            "question 1" + "percentage for question 1"</br>
+                            "question 2" + "percentage for question 2"</br>
+                            "question 3" + "percentage for question 3"</br>
+                        </div>
+                </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-default" style="width:100%;">
+                        <div class="panel-heading">Options</div>
+                        <div class="panel-body">
+                            <a href="#">Push this quiz to students</a></br>
+                            <a href="createQuiz.php">Create new quiz</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 
 
 
