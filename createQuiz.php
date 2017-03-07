@@ -8,13 +8,14 @@ $password=$_SESSION['password'];
 $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
 $classname=$_SESSION['classname'];
+//skriver questions
 $query = "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')";
 $questions = mysqli_query ( $connection, $query ) or die ( mysqli_error ( $connection ) );
 mysqli_close();
 $count = mysqli_num_rows ( $questions );
 $quizName=$_POST['quizName'];
 
-
+//lager quiz
 if ( isset ( $quizName ) ) {
 	
 	$createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
@@ -87,7 +88,7 @@ if ( isset ( $quizName ) ) {
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username." ".$quizName;?></a>
+					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username;?></a>
 					
 					<li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
