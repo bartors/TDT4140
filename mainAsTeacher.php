@@ -24,7 +24,7 @@ if (isset ( $_POST ['classname'] )) {
 	// setter classname variablene til empty og sender til neste side
 	unset ( $classname );
 	unset ( $_POST ['classname'] );
-	header ( 'Location:madeClass.php' );
+	header ( 'Location:mainAsTeacher.php' );
 }
 
 ?>
@@ -115,16 +115,15 @@ if (isset ( $_POST ['classname'] )) {
 			<div class="col-md-4">
 				<div class="panel panel-default" style="width: 100%;">
 					<div class="panel-heading">Courses</div>
-					<div class="panel-body">
+					<div class="panel-body" style="line-height: 22px;">
 						<?php 
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $classes ) ) {
-							echo  "<a href='coursePageTeacher.php?id=".$row['classname']."'>".$row ['classname'] ."</a></br>";
+							echo  "<a href='coursePageTeacher.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' class='btn btn-default btn-xs' type='submit' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br>";
 						}
 						} else {
 								echo "Du har ingen klasser.</br>";
 						}?>
-						<a href="coursePageTeacher.php">a course</a></br>
 					</div>
 				</div>
 			</div>
@@ -138,8 +137,7 @@ if (isset ( $_POST ['classname'] )) {
 					<div class="panel-body">
 						<input class="addCourseInput" type="text" name="classname"
 							placeholder="Course name">&nbsp
-						<button class="btn btn-default" type="submit""height: 30px;">Create
-							course</button>
+						<button class="btn btn-default" type="submit">Create course</button>
 					</div></form>
 				</div>
 			</div>

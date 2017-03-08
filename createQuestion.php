@@ -58,7 +58,7 @@ header('Location:createQuestion.php');
 
 <body id="page-top" class="index">
 
-    <!-- Navigation -->
+       <!-- Navigation -->
     <nav id="mainNav" class="navbar navbar-fixed-top navbar-custom">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -67,7 +67,7 @@ header('Location:createQuestion.php');
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
                 <ul class="nav navbar-nav">
-                <a class="navbar-brand" href="#page-top"><img src="img/classmateCleanLogo.svg" width="100%" style="vertical-align: top;"></a>
+                <a class="navbar-brand" href="index.php"><img src="img/classmateCleanLogo.svg" width="100%" style="vertical-align: top;"></a>
                 </li>
             </div>
 
@@ -78,9 +78,7 @@ header('Location:createQuestion.php');
                         <a href="#page-top"></a>
                     </li>
                     <li class="#page-scroll">
-                       <?php Echo $_SESSION['Question'];?><a href="#profil">My user</a>
-                    <li class="#page-scroll">
-                        <?php echo"<a href='makeClass.php'>My courses</a>"?>
+                        <a href="#"><?php echo"Logged in as: ".$username;?></a>
                     <li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
                     </li>
@@ -98,8 +96,7 @@ header('Location:createQuestion.php');
             <div class="row">
                 <div class="col-lg-12 text-center">
                     </br>
-                    <h2>Create question</h2>
-                    <hr class="star-primary">
+                    <h2>Create question</h2></br>
                 </div>
             </div>
             <div class="row">

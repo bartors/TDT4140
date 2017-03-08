@@ -87,7 +87,7 @@ mysqli_close();
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username." ".$quizName;?></a>
+					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username?></a>
 					
 					<li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>

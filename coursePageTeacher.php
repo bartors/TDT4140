@@ -119,28 +119,23 @@ if(isset($_POST['delete'])){
                         <div class="panel-body">
                             <input class="addCourseInput" type="text" name="quizName" required
                             placeholder="Name of quiz">&nbsp
-                            <button class="btn btn-default" type="submit">Create quiz</button>
+                            <button class="btn btn-default btn" type="submit">Create quiz</button>
                         </div></form>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
                     <div class="panel-heading">Course quizzes</div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="line-height: 22px;">
                     <?php 
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $quizes ) ) {
-							echo  "<form class='form-signin' method='POST'><a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a> <a href='createQuiz.php?id=".$row['qid']."' class='btn btn-default btn-xs' aria-label='Left Align'>
-                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
-                    </a>
-                     <button name='delete' class='btn btn-default btn-xs'  type='submit' value=".$row['qid']."><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></form>";
+							echo  "<form class='form-signin' method='POST'><a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a> <button name='delete' class='btn btn-default btn-xs' type='submit' value=".$row['qid']." style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button><a href='createQuiz.php?id=".$row['qid']."' class='btn btn-default btn-xs' aria-label='Left Align' style='float: right;'>
+                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a></form>";
 						}
 						} else {
 								echo "Du har ingen quizer.</br>";
 						}?>
-                   
-                    </br>
-                    <a href="quizPage.php">a quiz</a>
                     </div>
                 </div>
             </div>
