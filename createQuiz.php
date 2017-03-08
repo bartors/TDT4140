@@ -8,22 +8,21 @@ $password=$_SESSION['password'];
 $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
 $classname=$_SESSION['classname'];
-//skriver questions
 $query = "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')";
 $questions = mysqli_query ( $connection, $query ) or die ( mysqli_error ( $connection ) );
 mysqli_close();
 $count = mysqli_num_rows ( $questions );
-$quizName=$_POST['quizName'];
-
-//lager quiz
-if ( isset ( $quizName ) ) {
-	
-	$createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
-	$result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
-	mysqli_close();
-	header('Location:coursePageTeacher.php?id='.$classname);
-	
+$qid=$_GET['id'];
+//setter opp query for å hente info om quizen
+$showQuizName="select name from quiz where qid='$qid'";
+$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
+$count= mysqli_num_rows ( $result );
+if($count==1){
+	$row = mysqli_fetch_array ( $result );
+	$quizName=$row['name'];
 }
+mysqli_close();
+
 
 ?>
 <!DOCTYPE html>
@@ -88,7 +87,7 @@ if ( isset ( $quizName ) ) {
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username;?></a>
+					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username." ".$quizName;?></a>
 					
 					<li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
@@ -105,7 +104,7 @@ if ( isset ( $quizName ) ) {
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<h2>New Quiz</h2>
+					<?php   echo "<h2>".$quizName."</h2>";?>
 					</br>
 				</div>
 			</div>
@@ -116,9 +115,7 @@ if ( isset ( $quizName ) ) {
 						<div class="panel-heading">Added questions</div>
 						<form class="form-signin" method="POST">
 							<div class="panel-body">
-								<input class="addCourseInput" type="text" name="quizName" required
-									placeholder="Name of quiz"></br> <a href="createQuestion.php"
-									class="btn btn-default">Create new question</a></br>
+								<a href="createQuestion.php" class="btn btn-default">Create new question</a></br>
 								</br> 1. "a question"</br>
 								</br>
 								<button class="btn btn-default" type="submit">Create quiz</button>

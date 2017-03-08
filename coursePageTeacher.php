@@ -14,6 +14,27 @@ $_SESSION['classname']=$classname;
 $showQuizes="SELECT qid,name from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
 $quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $connection ) );
 $count = mysqli_num_rows ( $quizes );
+mysqli_close();
+$quizName=$_POST['quizName'];
+
+
+if ( isset ( $quizName ) ) {
+
+	$createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
+	$result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
+	mysqli_close();
+	header('Location:coursePageTeacher.php?id='.$classname);
+
+}
+if(isset($_POST['delete'])){
+	$qid=$_POST['delete'];
+	$deleteHasQuestions="delete from hasQuestions where quizid='$qid'";
+	$result = mysqli_query ( $connection, $deleteHasQuestions ) or die ( mysqli_error ( $connection ) );
+	$deleteQuiz="delete from quiz where qid='$qid'";
+	$result = mysqli_query ( $connection, $deleteQuiz ) or die ( mysqli_error ( $connection ) );
+	
+	header('Location:coursePageTeacher.php?id='.$classname);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,10 +114,13 @@ $count = mysqli_num_rows ( $quizes );
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading">Create questions and quizzes</div>
+                        <div class="panel-heading">Create quizzes</div>
+                        <form class="form-signin" method="POST">
                         <div class="panel-body">
-                            <a href="createQuiz.php">Create Quiz</a>
-                        </div>
+                            <input class="addCourseInput" type="text" name="quizName" required
+                            placeholder="Name of quiz">&nbsp
+                            <button class="btn btn-default" type="submit">Create quiz</button>
+                        </div></form>
                 </div>
             </div>
             <div class="col-md-4">
@@ -106,12 +130,16 @@ $count = mysqli_num_rows ( $quizes );
                     <?php 
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $quizes ) ) {
-							echo  "<a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a></br>";
+							echo  "<form class='form-signin' method='POST'><a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a> <a href='createQuiz.php?id=".$row['qid']."' class='btn btn-default btn-xs' aria-label='Left Align'>
+                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
+                    </a>
+                     <button name='delete' class='btn btn-default btn-xs'  type='submit' value=".$row['qid']."><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></form>";
 						}
 						} else {
 								echo "Du har ingen quizer.</br>";
 						}?>
-                    
+                   
+                    </br>
                     <a href="quizPage.php">a quiz</a>
                     </div>
                 </div>

@@ -84,7 +84,7 @@ $_SESSION['classname']=$classname;
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <?php echo '<h2>Student -'.$classname.' </h2>;'?>
+                    <h2>Your quizes</h2>                
                 </div>
             </div>
             </br>
@@ -93,8 +93,19 @@ $_SESSION['classname']=$classname;
                     <div class="panel panel-default" style="width:100%;">
                         <div class="panel-heading">Newest quizzes</div>
                         <div class="panel-body">
-                            <a href="quizPage.php">Quiz 1</a></br>
-                            <a href="quizPage.php">Quiz 2</a></br>
+
+                            
+                            <!--GET QUIZES-->
+                            <ul name = "quizes" style="list-style-type: none;">
+                            <?php
+                            $sql = mysqli_query($connection, "SELECT name FROM quiz");
+                            while ($row = $sql->fetch_assoc()){
+                            echo '<li><a class="btn btn-link" href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></li>';
+                            }?>
+
+                            </ul>
+                            
+
                         </div>
                 </div>
             </div>
@@ -109,12 +120,23 @@ $_SESSION['classname']=$classname;
 
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
-                    <div class="panel-heading">Course quizzes</div>
-                    <div class="panel-body">A list of quizzes here
+                    <div class="panel-heading">Course quizzes
+                    </div>
+                    <div class="panel-body">
+
+                        <!--GET QUIZES-->
+                        <ul name = "quizes" style="list-style-type: none;">
+                        <?php
+                        $sql = mysqli_query($connection, "SELECT name FROM quiz");
+                        while ($row = $sql->fetch_assoc()){
+                        echo '<li><a class="btn btn-link" href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></li>';
+                        }?>
+
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
     
