@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require 'connect.php';
 //setter lokale variabler utifraa session's variabler
@@ -7,33 +6,41 @@ $username=$_SESSION['username'];
 $password=$_SESSION['password'];
 $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
-
 //setter opp query for å hente info om brukeren
 $classname=$_GET['id'];
 $_SESSION['classname']=$classname;
-$showQuizes="SELECT qid,name from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
+$showQuizes="SELECT qid,name,active from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
 $quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $connection ) );
 $count = mysqli_num_rows ( $quizes );
 mysqli_close();
 $quizName=$_POST['quizName'];
-
-
 if ( isset ( $quizName ) ) {
-
-	$createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
-	$result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
-	mysqli_close();
-	header('Location:coursePageTeacher.php?id='.$classname);
-
+    $createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
+    $result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
+    mysqli_close();
+    header('Location:coursePageTeacher.php?id='.$classname);
 }
 if(isset($_POST['delete'])){
-	$qid=$_POST['delete'];
-	$deleteHasQuestions="delete from hasQuestions where quizid='$qid'";
-	$result = mysqli_query ( $connection, $deleteHasQuestions ) or die ( mysqli_error ( $connection ) );
-	$deleteQuiz="delete from quiz where qid='$qid'";
-	$result = mysqli_query ( $connection, $deleteQuiz ) or die ( mysqli_error ( $connection ) );
-	
-	header('Location:coursePageTeacher.php?id='.$classname);
+    $qid=$_POST['delete'];
+    $deleteHasQuestions="delete from hasQuestions where quizid='$qid'";
+    $result = mysqli_query ( $connection, $deleteHasQuestions ) or die ( mysqli_error ( $connection ) );
+    $deleteQuiz="delete from quiz where qid='$qid'";
+    $result = mysqli_query ( $connection, $deleteQuiz ) or die ( mysqli_error ( $connection ) );
+    mysqli_close();
+    header('Location:coursePageTeacher.php?id='.$classname);
+}
+if(isset($_POST['activStat'])){
+    $qiz=$_POST['activQid'];
+    $status=$_POST['activStat'];
+    if($status==1){
+        $activateQuiz="update quiz set active=0 where qid='$qiz' ";
+    }else{
+    $activateQuiz="update quiz set active=1 where qid='$qiz' ";
+    }
+    $result = mysqli_query ( $connection, $activateQuiz ) or die ( mysqli_error ( $connection ) );
+    mysqli_close();
+    //activateQuiz($status, $qiz);
+    header('Location:coursePageTeacher.php?id='.$classname);
 }
 ?>
 <!DOCTYPE html>
@@ -91,7 +98,7 @@ if(isset($_POST['delete'])){
                         <a href="#page-top"></a>
                     </li>
                     <li class="#page-scroll">
-                        <a href="#"><?php echo"Logged in as: ".$username;?></a>
+                        <a href="#"><?php echo"Logged in as: ".$username?></a>
                     <li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
                     </li>
@@ -128,24 +135,27 @@ if(isset($_POST['delete'])){
                     <div class="panel-heading">Course quizzes</div>
                     <div class="panel-body" style="line-height: 22px;">
                     <?php 
-						if ($count > 0) {
-						while ( $row = mysqli_fetch_array ( $quizes ) ) {
-							echo  "<form class='form-signin' method='POST'>
-                                <a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a>
+                        if ($count > 0) {
+                            while ( $row = mysqli_fetch_array ( $quizes ) ) {
+                                echo  "<form class='form-signin' method='POST'>
+                                <a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a> 
                                 <button name='delete' class='btn btn-default btn-xs' type='submit' value=".$row['qid']." style='float: right;'>
-                                    <span class='glyphicon glyphicon-trash' aria-hidden='true'></span>
-                                </button>
+                                    <span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>
                                 <a href='createQuiz.php?id=".$row['qid']."' class='btn btn-default btn-xs' aria-label='Left Align' style='float: right;'>
-                                    <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>
-                                </a>
-                                <button class='btn btn-default btn-xs' style='float: right;'>
-                                    <li  style='color: green;'>Live </li></span>
-                                </button>
-                            </form>";
-						}
-						} else {
-								echo "Du har ingen quizer.</br>";
-						}?>
+                                    <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>";
+                                if($row['active']==1){
+                                    echo "<input type='hidden'  name='activQid' value=".$row['qid']."><button class='btn btn-default btn-xs' name='activStat' type='submit' value=".$row['active']." style='float: right;'>
+                                    <li  style='color: green;'>Live</li>
+                                </button></form>";
+                                }else{
+                                    echo "<input type='hidden'  name='activQid' value=".$row['qid']."><button class='btn btn-default btn-xs'  name='activStat' type='submit' value=".$row['active']." style='float: right;'>
+                                    <li  style='color: red;'>Live</li>
+                                </button></form>";
+                                }
+                            }
+                        } else {
+                                echo "Du har ingen quizer.</br>";
+                        }?>
                     </div>
                 </div>
             </div>

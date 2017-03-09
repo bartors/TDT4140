@@ -84,7 +84,7 @@ $_SESSION['classname']=$classname;
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>Your quizes</h2>                
+                    <h2><?php echo"Quizzes - ".$classname;?></h2>                
                 </div>
             </div>
             </br>
@@ -96,14 +96,11 @@ $_SESSION['classname']=$classname;
 
                             
                             <!--GET QUIZES-->
-                            <ul name = "quizes" style="list-style-type: none;">
                             <?php
                             $sql = mysqli_query($connection, "SELECT name FROM quiz");
                             while ($row = $sql->fetch_assoc()){
-                            echo '<li><a class="btn btn-link" href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></li>';
+                            echo '<a href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></br>';
                             }?>
-
-                            </ul>
                             
 
                         </div>
@@ -125,14 +122,12 @@ $_SESSION['classname']=$classname;
                     <div class="panel-body">
 
                         <!--GET QUIZES-->
-                        <ul name = "quizes" style="list-style-type: none;">
                         <?php
                         $sql = mysqli_query($connection, "SELECT name FROM quiz");
                         while ($row = $sql->fetch_assoc()){
-                        echo '<li><a class="btn btn-link" href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></li>';
+                        echo '<a href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></br>';
                         }?>
 
-                        </ul>
                     </div>
                 </div>
             </div>

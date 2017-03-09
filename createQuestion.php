@@ -15,12 +15,25 @@ $c=$_POST['C'];
 $d=$_POST['D'];
 $ans=$_POST['group1'];
 $topic=$_POST['topic'];
+$qid=$_GET['id'];
+
+//setter opp query for å hente info om quizen
+$currQuiz = $_GET['quiz'];
+$showQuizName="select name from quiz where qid='$qid'";
+$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
+$count= mysqli_num_rows ( $result );
+if($count==1){
+    $row = mysqli_fetch_array ( $result );
+    $quizName=$row['name'];
+}
 
 //setter opp query for å hente info om brukeren
 if(isset($_POST['group1'])){
 	$makeQuestion = "INSERT INTO questions(classid,question,A,B,C,D,Ans,tema) values((SELECT classid FROM class WHERE classname='$classname'),'$question','$a','$b','$c','$d','$ans','$topic') ";
+    $putIntoQuiz = "INSERT INTO hasQuestions values($qid,(SELECT qid FROM questions WHERE question='$question')) ";
 	$result = mysqli_query ( $connection, $makeQuestion) or die ( mysqli_error ( $connection ) );
-header('Location:createQuestion.php');
+    $result = mysqli_query ( $connection, $putIntoQuiz) or die ( mysqli_error ( $connection ) );
+header("Location:createQuiz.php?id=".$qid);
 }
 ?>
 <!DOCTYPE html>
