@@ -131,7 +131,8 @@ if(isset($_POST['delete'])){
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $quizes ) ) {
 							echo  "<form class='form-signin' method='POST'><a href='quizPage.php?id=".$row['qid']."'>".$row ['name'] ."</a> <button name='delete' class='btn btn-default btn-xs' type='submit' value=".$row['qid']." style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button><a href='createQuiz.php?id=".$row['qid']."' class='btn btn-default btn-xs' aria-label='Left Align' style='float: right;'>
-                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a></form>";
+                        <span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a><a href='createQuiz.php?id=".$row['qid']."' class='btn btn-default btn-xs' aria-label='Left Align' style='float: right;'>
+                        <li style='color: green;'>Live </li></span></a></form>";
 						}
 						} else {
 								echo "Du har ingen quizer.</br>";
