@@ -22,6 +22,19 @@ if($count==1){
 	$quizName=$row['name'];
 }
 
+//setter opp form for å legge til quiz fra høyre panel inn i quizen
+
+if(isset($_POST['addQuestionToQuiz'])){
+	$quizId=$_GET['id'];
+	$questionId=$_POST['addQuestionToQuiz'];
+    $addToHasQuestions="INSERT INTO hasQuestions (Quizid, queid) VALUES ($quizId, $questionId)";
+    $result = mysqli_query ( $connection, $addToHasQuestions ) or die ( mysqli_error ( $connection ) );
+
+    mysqli_close();
+    header('Location:createQuiz.php?id='.$qid);
+}
+
+
 
 ?>
 <!DOCTYPE html>
@@ -154,12 +167,14 @@ if($count==1){
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading">Press a question to add it to your quiz</div>
-						<div class="panel-body">
+						<div class="panel-body" style="line-height: 22px;">
 							<!--GET QUESTIONS FOR PANEL FAR RIGHT-->
 		                    <?php
-		                    $sql = mysqli_query($connection, "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
+		                    $sql = mysqli_query($connection, "SELECT qid, question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
 		                    while ($row = $sql->fetch_assoc()){
-		                    echo '<a href=#>'.$row['question'].'</a></br>';
+		                    	echo  "<form class='form-signin' method='POST'> 
+                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
+                                    ".$row['question']."</button></form>";
 		                    }?>
 
                 		</div>

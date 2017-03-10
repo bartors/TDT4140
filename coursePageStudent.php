@@ -91,15 +91,15 @@ $_SESSION['classname']=$classname;
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading">Newest quizzes</div>
+                        <div class="panel-heading">Live quizzes</div>
                         <div class="panel-body">
 
                             
                             <!--GET QUIZES-->
                             <?php
-                            $sql = mysqli_query($connection, "SELECT name FROM quiz");
+                            $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1)");
                             while ($row = $sql->fetch_assoc()){
-                            echo '<a href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></br>';
+                            echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
                             }?>
                             
 
@@ -123,9 +123,9 @@ $_SESSION['classname']=$classname;
 
                         <!--GET QUIZES-->
                         <?php
-                        $sql = mysqli_query($connection, "SELECT name FROM quiz");
+                        $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE classid=(SELECT classid from class where classname='$classname')");
                         while ($row = $sql->fetch_assoc()){
-                        echo '<a href=quizPage.php?quiz='.$row['name'].'>'.$row['name'].'</a></br>';
+                        echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
                         }?>
 
                     </div>
