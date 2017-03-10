@@ -10,10 +10,10 @@ $userid=$_SESSION['userid'];
 $classname=$_SESSION['classname'];
 $query = "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')";
 $questions = mysqli_query ( $connection, $query ) or die ( mysqli_error ( $connection ) );
-mysqli_close();
 $count = mysqli_num_rows ( $questions );
 $qid=$_GET['id'];
 //setter opp query for å hente info om quizen
+$currQuiz = $_GET['quiz'];
 $showQuizName="select name from quiz where qid='$qid'";
 $result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
 $count= mysqli_num_rows ( $result );
@@ -21,7 +21,19 @@ if($count==1){
 	$row = mysqli_fetch_array ( $result );
 	$quizName=$row['name'];
 }
-mysqli_close();
+
+//setter opp form for å legge til quiz fra høyre panel inn i quizen
+
+if(isset($_POST['addQuestionToQuiz'])){
+	$quizId=$_GET['id'];
+	$questionId=$_POST['addQuestionToQuiz'];
+    $addToHasQuestions="INSERT INTO hasQuestions (Quizid, queid) VALUES ($quizId, $questionId)";
+    $result = mysqli_query ( $connection, $addToHasQuestions ) or die ( mysqli_error ( $connection ) );
+
+    mysqli_close();
+    header('Location:createQuiz.php?id='.$qid);
+}
+
 
 
 ?>
@@ -87,7 +99,7 @@ mysqli_close();
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username." ".$quizName;?></a>
+					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username?></a>
 					
 					<li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
@@ -112,11 +124,30 @@ mysqli_close();
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Added questions</div>
+						<div class="panel-heading"><?php   echo $quizName;?> - Added questions</div>
 						<form class="form-signin" method="POST">
 							<div class="panel-body">
-								<a href="createQuestion.php" class="btn btn-default">Create new question</a></br>
-								</br> 1. "a question"</br>
+							<?php
+
+
+								echo "<a href='createQuestion.php?id=".$_GET['id']."' class='btn btn-default'>Create new question</a></br>
+								</br>";
+								?>
+		                            <!--GET QUESTIONS IN QUIZ-->
+		                        	<?php 
+                            		$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
+                            		$questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
+                            		$i = 1;
+                            		while ($row = $questionIDs->fetch_assoc()){
+                            			$currQuestion = mysqli_query($connection, "SELECT question FROM questions WHERE qid=".$row['queid'])->fetch_assoc();
+                            				foreach ($currQuestion as $key => $val) {
+   												echo $i.". ".$val."</br>";
+											}
+										$i++;
+                            			}
+                            		?>
+
+								</br>
 								</br>
 								<button class="btn btn-default" type="submit">Create quiz</button>
 							</div>
@@ -136,19 +167,19 @@ mysqli_close();
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading">Press a question to add it to your quiz</div>
-						<div class="panel-body"><?php 
-						if ($count > 0) {
-						while ( $row = mysqli_fetch_array ( $questions ) ) {
-							echo  $row ['question'] ."</br>";
-						}
-						} else {
-								echo "Det finnes ingen spørsmål.</br>";
-						}?>
-                </div>
+						<div class="panel-body" style="line-height: 22px;">
+							<!--GET QUESTIONS FOR PANEL FAR RIGHT-->
+		                    <?php
+		                    $sql = mysqli_query($connection, "SELECT qid, question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
+		                    while ($row = $sql->fetch_assoc()){
+		                    	echo  "<form class='form-signin' method='POST'> 
+                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
+                                    ".$row['question']."</button></form>";
+		                    }?>
+
+                		</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 

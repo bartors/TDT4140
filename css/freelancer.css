@@ -3,6 +3,14 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+.glyphiconButton {
+	padding: 4px 5px;
+	font-size: 12px;
+	line-height: 1,5;
+	border-radius: 3px;
+}
+
+
 .addCourseInput {
 	height: 30px;
 	font-size: 15px;

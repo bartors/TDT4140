@@ -14,7 +14,7 @@ function error($string) {
 	} else {
 		print 'Noe gikk feil. Være så snill, kontakt våre utviklere.';
 	}
-	echo "<p><a href='classMate.php'>Tilbake til hovedsiden</a>";
+	echo "<p><a href='mainAsStudent.php'>Tilbake til hovedsiden</a>";
 	exit ();
 }
 if (isset ( $_POST ['classname'] )) {
@@ -24,7 +24,7 @@ if (isset ( $_POST ['classname'] )) {
 	$result = mysqli_query ( $connection, $query ) or error ( mysqli_error ( $connection ) );
 	unset ( $classname );
 	unset ( $_POST ['classname'] );
-	header ( 'Location:attendsClass.php' );
+	header ( 'Location:mainAsStudent.php' );
 }
 //Printer ut klasser du er i
 $showClasses = "SELECT classname from class join attends on class.classid=attends.classid where attends.userid='$userid'";
@@ -121,17 +121,16 @@ $count = mysqli_num_rows ( $classes );
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading">My Courses</div>
 						<form class="form-signin" method="POST">
-							<div class="panel-body">
+							<div class="panel-body" style="line-height: 22px;">
 								<?php 
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $classes ) ) {
-							echo  "<a href='coursePageStudent.php?id=".$row['classname']."'>".$row ['classname'] ."</a></br>";
+							echo  "<a href='coursePageStudent.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' class='btn btn-default btn-xs' type='submit' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br>";
 						}
 						} else {
 								echo "Du har ingen klasser.</br>";
 						}?></br>
-								</br>
-								</br> <input class="addCourseInput" type="text" name="classname"
+								<input class="addCourseInput" type="text" name="classname"
 									placeholder="Course name">&nbsp
 								<button class="btn btn-default" type="submit"
 									style="height: 30px;">Add course</button>
