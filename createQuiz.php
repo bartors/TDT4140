@@ -12,6 +12,7 @@ $query = "SELECT question FROM questions WHERE classid=(SELECT classid from clas
 $questions = mysqli_query ( $connection, $query ) or die ( mysqli_error ( $connection ) );
 $count = mysqli_num_rows ( $questions );
 $qid=$_GET['id'];
+$topic=$_GET['topic'];
 //setter opp query for å hente info om quizen
 $currQuiz = $_GET['quiz'];
 $showQuizName="select name from quiz where qid='$qid'";
@@ -31,9 +32,17 @@ if(isset($_POST['addQuestionToQuiz'])){
     $result = mysqli_query ( $connection, $addToHasQuestions ) or die ( mysqli_error ( $connection ) );
 
     mysqli_close();
-    header('Location:createQuiz.php?id='.$qid);
+    header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
 }
 
+//setter opp form for å sortere via topics
+/*
+if(isset($_POST['changeTopic'])){
+	$quizId=$_GET['id'];
+	$topic=$_POST['changeTopic'];
+    header('Location:createQuiz.php?id='.$qid.'&topic='.$topic."");
+}
+*/
 
 
 ?>
@@ -158,7 +167,12 @@ if(isset($_POST['addQuestionToQuiz'])){
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading">Choose a topic to find questions</div>
 						<div class="panel-body">
-							<a href="#">a topic</a>
+							<!--GET TOPICS-->
+		                    <?php
+		                    $sql = mysqli_query($connection, "SELECT DISTINCT tema FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
+		                    while ($row = $sql->fetch_assoc()){
+		                    	echo "<a href='createQuiz.php?id=".$_GET['id']."&topic=".$row['tema']."''>".$row['tema'] ."</a></br>";
+		                    }?>
 						</div>
 					</div>
 				</div>
@@ -166,28 +180,66 @@ if(isset($_POST['addQuestionToQuiz'])){
 
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Press a question to add it to your quiz</div>
+						<div class="panel-heading"><?php 
+						if ($topic == '') {
+							echo "Topic: All</div>";
+						}
+						else {
+							echo "Topic: ".$topic."</div>";
+						}
+
+						?>
 						<div class="panel-body" style="line-height: 22px;">
 							<!--GET QUESTIONS FOR PANEL FAR RIGHT-->
+							Press a question to add it to your quiz</br>
 		                    <?php
-		                    $sql = mysqli_query($connection, "SELECT qid, question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
-		                    while ($row = $sql->fetch_assoc()){
-		                    	
-		                    	$alreadyInQuiz = mysqli_query($connection, "SELECT Quizid FROM hasQuestions WHERE queid='".$row['qid']."' AND quizId='".$_GET['id']."'");
-		                    	
-		                    	if ($alreadyInQuiz->num_rows == 0){
-		                    		echo  "<form class='form-signin' method='POST'> 
-	                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
-	                                    ".$row['question']."</button></form>";
+
+		                    if ($topic == '') {
+			                    
+			                    $sql = mysqli_query($connection, "SELECT qid, question, tema FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
+			                    while ($row = $sql->fetch_assoc()){
+			                    	
+			                    	$alreadyInQuiz = mysqli_query($connection, "SELECT Quizid FROM hasQuestions WHERE queid='".$row['qid']."' AND quizId='".$_GET['id']."'");
+			                    	
+			                    	if ($alreadyInQuiz->num_rows == 0){
+			                    		echo  "<form class='form-signin' method='POST'> 
+		                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
+		                                    ".$row['question']."</button></form>";
+
+			                    	}
+			                    	else {
+			                    		/* Bruk denne for disabled buttons
+				                    	echo  "<form class='form-signin' method='POST'> 
+		                                <button class='btn btn-default btn-xs disabled' value=".$row['qid'].">
+		                                    ".$row['question']."</button></form>";
+		                                */
+		                            }		                    	
 
 		                    	}
-		                    	else {
-		                    		/* Bruk denne for disabled buttons
-			                    	echo  "<form class='form-signin' method='POST'> 
-	                                <button class='btn btn-default btn-xs disabled' value=".$row['qid'].">
-	                                    ".$row['question']."</button></form>";
-	                                */
-	                            }
+
+		                    }
+
+		                    else {
+
+			                    $sql = mysqli_query($connection, "SELECT qid, question, tema FROM questions WHERE classid=(SELECT classid from class where classname='$classname') AND tema='$topic'");
+			                    while ($row = $sql->fetch_assoc()){
+			                    	
+			                    	$alreadyInQuiz = mysqli_query($connection, "SELECT Quizid FROM hasQuestions WHERE queid='".$row['qid']."' AND quizId='".$_GET['id']."'");
+			                    	
+			                    	if ($alreadyInQuiz->num_rows == 0){
+			                    		echo  "<form class='form-signin' method='POST'> 
+		                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
+		                                    ".$row['question']."</button></form>";
+
+			                    	}
+			                    	else {
+			                    		/* Bruk denne for disabled buttons
+				                    	echo  "<form class='form-signin' method='POST'> 
+		                                <button class='btn btn-default btn-xs disabled' value=".$row['qid'].">
+		                                    ".$row['question']."</button></form>";
+		                                */
+		                            }
+		                        }
 		                    }?>
 
                 		</div>
