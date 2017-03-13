@@ -172,9 +172,22 @@ if(isset($_POST['addQuestionToQuiz'])){
 		                    <?php
 		                    $sql = mysqli_query($connection, "SELECT qid, question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')");
 		                    while ($row = $sql->fetch_assoc()){
-		                    	echo  "<form class='form-signin' method='POST'> 
-                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
-                                    ".$row['question']."</button></form>";
+		                    	
+		                    	$alreadyInQuiz = mysqli_query($connection, "SELECT Quizid FROM hasQuestions WHERE queid='".$row['qid']."' AND quizId='".$_GET['id']."'");
+		                    	
+		                    	if ($alreadyInQuiz->num_rows == 0){
+		                    		echo  "<form class='form-signin' method='POST'> 
+	                                <button name='addQuestionToQuiz' class='btn btn-default btn-xs' type='submit' value=".$row['qid'].">
+	                                    ".$row['question']."</button></form>";
+
+		                    	}
+		                    	else {
+		                    		/* Bruk denne for disabled buttons
+			                    	echo  "<form class='form-signin' method='POST'> 
+	                                <button class='btn btn-default btn-xs disabled' value=".$row['qid'].">
+	                                    ".$row['question']."</button></form>";
+	                                */
+	                            }
 		                    }?>
 
                 		</div>
