@@ -14,12 +14,14 @@ $quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $con
 $count = mysqli_num_rows ( $quizes );
 mysqli_close();
 $quizName=$_POST['quizName'];
+//lager quizen
 if ( isset ( $quizName ) ) {
     $createQuiz="INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
     $result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
     mysqli_close();
     header('Location:coursePageTeacher.php?id='.$classname);
 }
+//sletter quizen
 if(isset($_POST['delete'])){
     $qid=$_POST['delete'];
     $deleteHasQuestions="delete from hasQuestions where quizid='$qid'";
@@ -29,13 +31,17 @@ if(isset($_POST['delete'])){
     mysqli_close();
     header('Location:coursePageTeacher.php?id='.$classname);
 }
+//aktiverer quizen
+
 if(isset($_POST['activStat'])){
     $qiz=$_POST['activQid'];
     $status=$_POST['activStat'];
     if($status==1){
         $activateQuiz="update quiz set active=0 where qid='$qiz' ";
     }else{
-    $activateQuiz="update quiz set active=1 where qid='$qiz' ";
+    	date_default_timezone_set('Europe/Oslo');
+    	$date=date('Y-m-d H-i-s');
+    	$activateQuiz="update quiz set active=1, activDate='$date' where qid='$qiz' ";
     }
     $result = mysqli_query ( $connection, $activateQuiz ) or die ( mysqli_error ( $connection ) );
     mysqli_close();
