@@ -26,6 +26,14 @@ if (isset ( $_POST ['classname'] )) {
 	unset ( $_POST ['classname'] );
 	header ( 'Location:mainAsTeacher.php' );
 }
+//form for å slette et fag
+if(isset($_POST['delete'])){
+    $classID=$_POST['delete'];
+    $deleteCourse="UPDATE class SET teacherDeleted = 1 WHERE classid = $classID;";
+    $result = mysqli_query ( $connection, $deleteCourse ) or die ( mysqli_error ( $connection ) );
+    mysqli_close();
+    header('Location:mainAsTeacher.php');
+}
 
 ?>
 <!DOCTYPE html>
@@ -119,10 +127,15 @@ if (isset ( $_POST ['classname'] )) {
 						<?php 
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $classes ) ) {
-							echo  "<a href='coursePageTeacher.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' class='btn btn-default btn-xs' type='submit' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br>";
+							if ($row['teacherDeleted']==0) {
+								echo  "<form class='form-signin' method='POST'><a href='coursePageTeacher.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' class='btn btn-default btn-xs' type='submit' value='".$row['classid']."' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br></form>";
+							}
+							else {
+
+							}
 						}
 						} else {
-								echo "Du har ingen klasser.</br>";
+								echo "You have no classes yet.</br>";
 						}?>
 					</div>
 				</div>
