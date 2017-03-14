@@ -97,7 +97,7 @@ $_SESSION['classname']=$classname;
                             
                             <!--GET QUIZES-->
                             <?php
-                            $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1)");
+                            $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
                             while ($row = $sql->fetch_assoc()){
                             echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
                             }?>
