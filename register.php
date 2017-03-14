@@ -51,13 +51,15 @@ if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
 			<div class="login-group">
 				<form class="inputs" method="POST">
         <?php if(isset($fmsg)){ ?><div class="alert alert-danger"
-						role="alert"> <?php echo $fmsg; ?> </div><?php } ?>
+						role="alert"> <?php echo $fmsg; ?> </div><?php }?>
+		<?php if(isset($smsg)){ ?><div class="alert alert-success" role="alert"><?php echo $smsg; ?> </div><?php }?>
         <input type="text" name="username" placeholder="Username"
 						class="form-control" required> <input type="email" name="email"
 						placeholder="E-Mail Address" class="form-control" required> <input
 						type="password" name="password" placeholder="Password"
 						class="form-control" required>
 					<div class="buttonHolder">
+						<input type="checkbox" name="teacher" value="teacher"> I am a Teacher
 						<button class="submitBtn" type="Submit" id="submitBtn"
 							name="submitBtn">Register</button>
 					</div>

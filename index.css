@@ -39,7 +39,11 @@
     border: 2px solid #437f33;
 }
 
-.buttonHolder{ text-align: center; }
+.buttonHolder{ 
+	text-align: center;
+	color: white;
+
+}
 
 a{
 	color: #FFF;
