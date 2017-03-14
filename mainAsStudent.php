@@ -27,9 +27,18 @@ if (isset ( $_POST ['classname'] )) {
 	header ( 'Location:mainAsStudent.php' );
 }
 //Printer ut klasser du er i
-$showClasses = "SELECT classname from class join attends on class.classid=attends.classid where attends.userid='$userid'";
+$showClasses = "SELECT classname, class.classid from class join attends on class.classid=attends.classid where attends.userid='$userid'";
 $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
 $count = mysqli_num_rows ( $classes );
+
+//sletter klassen
+if(isset($_POST['delete'])){
+	$classid=$_POST['delete'];
+	$deleteAttends="delete from attends where classid='$classid' and userid='$userid'";
+	$result = mysqli_query ( $connection, $deleteAttends ) or die ( mysqli_error ( $connection ) );
+	mysqli_close();
+	header('Location:mainAsStudent.php');
+}
 
 ?>
 
@@ -120,22 +129,23 @@ $count = mysqli_num_rows ( $classes );
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading">My Courses</div>
-						<form class="form-signin" method="POST">
+						
 							<div class="panel-body" style="line-height: 22px;">
 								<?php 
 						if ($count > 0) {
 						while ( $row = mysqli_fetch_array ( $classes ) ) {
-							echo  "<a href='coursePageStudent.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' class='btn btn-default btn-xs' type='submit' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br>";
+							echo  "<form class='form-signin' method='POST'><a href='coursePageStudent.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' value=".$row['classid']." class='btn btn-default btn-xs' type='submit' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br></form>";
 						}
 						} else {
 								echo "Du har ingen klasser.</br>";
 						}?></br>
+						<form class='form-signin' method='POST'>
 								<input class="addCourseInput" type="text" name="classname"
 									placeholder="Course name">&nbsp
 								<button class="btn btn-default" type="submit"
-									style="height: 30px;">Add course</button>
+									style="height: 30px;">Add course</button></form>
 							</div>
-						</form>
+						
 					</div>
 				</div>
 				<div class="col-md-4">
