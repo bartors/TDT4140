@@ -1,8 +1,19 @@
 <?php
 require ('connect.php');
 // If the values are posted, insert them into the database.
+//registrerer brukeren
+function registerUser($connection,$username,$email,$password,$teacher){
+	//trenger en logikk som skjekker om variablene ikke overskirder en lengde på 255
+	if ($teacher) {
+		$query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'T')";
+	} else {
+		$query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'S')";
+	}
+	return mysqli_query ( $connection, $query );
+}
+
 if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
-	$username = $_POST ['username'];
+	/*$username = $_POST ['username'];
 	$email = $_POST ['email'];
 	$password = $_POST ['password'];
 	
@@ -11,7 +22,8 @@ if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
 	} else {
 		$query = "INSERT INTO `users` (username, password, email ,active, role) VALUES ('$username', '$password', '$email', 1,'S')";
 	}
-	$result = mysqli_query ( $connection, $query );
+	$result = mysqli_query ( $connection, $query );*/
+	$result=registerUser($connection, $_POST['username'], $_POST['email'], $_POST['password'], $_POST['teacher']);
 	if ($result) {
 		$smsg = "User Created Successfully.";
 	} else {
