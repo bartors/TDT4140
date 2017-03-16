@@ -5,34 +5,39 @@ require 'connect.php';
 $username = $_SESSION ['username'];
 $password = $_SESSION ['password'];
 $role = $_SESSION ['role'];
-$userid = $_SESSION ['userid'];
 
-// setter opp query for å hente info om brukeren
-//$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
-// Setter lokale variaber utifra de globale
-$userid = $_SESSION ['userid'];
-// Sjekker om inputen ble sendt
+
+//henter klasser
+function showClasses($connection,$userid){
 $showClasses = "SELECT * FROM class WHERE creator='$userid'";
 $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
+mysqli_close();
+return $classes;
+}
+$classes = showClasses($connection, $_SESSION['userid']);
 $count = mysqli_num_rows ( $classes );
-
-if (isset ( $_POST ['classname'] )) {
-	// legger til ny row i class tabellen i databasen
-	$classname = $_POST ['classname'];
+//lager ny klasse
+function makeClass($connection,$userid,$classname){
 	$makeClass = "INSERT INTO class(classname, creator) values('$classname','$userid')";
 	$result = mysqli_query ( $connection, $makeClass ) or die ( mysqli_error ( $connection ) );
-	// setter classname variablene til empty og sender til neste side
-	unset ( $classname );
+	mysqli_close();
+}
+if (isset ( $_POST ['classname'] )) {
+	makeClass($connection, $_SESSION ['userid'], $_POST ['classname']);
 	unset ( $_POST ['classname'] );
 	header ( 'Location:mainAsTeacher.php' );
 }
-//form for å slette et fag
+//deaktiverer et fag
+function deactivateClass($connection,$classID){
+	$deleteCourse="UPDATE class SET teacherDeleted = 1 WHERE classid = $classID;";
+	$result = mysqli_query ( $connection, $deleteCourse ) or die ( mysqli_error ( $connection ) );
+	mysqli_close();
+}
+
 if(isset($_POST['delete'])){
-    $classID=$_POST['delete'];
-    $deleteCourse="UPDATE class SET teacherDeleted = 1 WHERE classid = $classID;";
-    $result = mysqli_query ( $connection, $deleteCourse ) or die ( mysqli_error ( $connection ) );
-    mysqli_close();
-    header('Location:mainAsTeacher.php');
+	deactivateClass($connection, $_POST['delete']);
+	unset ( $_POST ['delete'] );
+	header('Location:mainAsTeacher.php');
 }
 
 ?>
