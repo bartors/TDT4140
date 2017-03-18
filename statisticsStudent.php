@@ -1,4 +1,5 @@
 <?php
+
 session_start ();
 require 'connect.php';
 // setter lokale variabler utifraa session's variabler
@@ -6,6 +7,7 @@ $username = $_SESSION ['username'];
 $password = $_SESSION ['password'];
 $role = $_SESSION ['role'];
 $userid = $_SESSION ['userid'];
+$quizId = $_GET['quizId'];
 // setter opp query for å hente info om brukeren
 $query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
 function error($string) {
@@ -26,6 +28,11 @@ if (isset ( $_POST ['classname'] )) {
 	unset ( $_POST ['classname'] );
 	header ( 'Location:attendsClass.php' );
 }
+
+//henter quiznavn
+$getQuizName = mysqli_fetch_assoc(mysqli_query($connection, "SELECT name FROM quiz WHERE qid = '$quizId'"));
+$quizName = $getQuizName['name'];
+
 //Printer ut klasser du er i
 $showClasses = "SELECT classname from class join attends on class.classid=attends.classid where attends.userid='$userid'";
 $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
@@ -119,11 +126,38 @@ $count = mysqli_num_rows ( $classes );
 			            <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading">"Name of quiz" + "percentage for whole quiz"</div>
+                        <div class="panel-heading"><?php echo $quizName." - Statistics" ?></div>
                         <div class="panel-body">
-                            "question 1" + "wrong or correct"</br>
-                            "question 2" + "wrong or correct"</br>
-                            "question 3" + "wrong or correct"</br>
+                            <?php
+                            	$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
+                            	$questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
+                            	$i = 1;
+                            	$totalCorrect = 0;
+                            	$totalQuestions = 0;
+                            	while ($row = $questionIDs->fetch_assoc()){
+                            		$currQuestion = mysqli_query($connection, "SELECT question FROM questions WHERE qid=".$row['queid'])->fetch_assoc();
+                            		$currScore = mysqli_query($connection, "SELECT answer FROM hasAnsweredQuestion WHERE qid='".$row['qid']."' AND questid='".$row['queid']."' AND userid = '".$userid."'");
+                            		while ($score = $currScore->fetch_assoc()) {
+                            			if ($score['answer']==1) {
+                            				$totalCorrect++;
+                            				$totalQuestions++;
+                            				$grade = "<div style='float: right; color: green;'>Correct</div>";
+                            			}
+                            			else {
+                            				$totalQuestions++;
+                            				$grade = "<div style='float: right; color: red;'>Wrong</div>";
+                            			}
+                            		}
+
+                            		foreach ($currQuestion as $key => $val) {
+   										echo $i.". ".$val.$grade."</br>";		
+									}
+									$i++;
+                            	}
+                            	echo "<strong>Total score: ".$totalCorrect."/".$totalQuestions."</strong>";
+
+
+                            ?>
                         </div>
                 </div>
                 </div>
@@ -131,7 +165,7 @@ $count = mysqli_num_rows ( $classes );
                     <div class="panel panel-default" style="width:100%;">
                         <div class="panel-heading">Options</div>
                         <div class="panel-body">
-                            <a href="quizPage.php">Do this quiz again</a>
+                            <a href="quizPage.php?">Do this quiz again</a>
                         </div>
                     </div>
                 </div>
