@@ -170,7 +170,42 @@ if(isset($_POST['activStat'])){
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
                     <div class="panel-heading">Statistics</div>
-                    <div class="panel-body"><a href="statisticsTeacher.php">Statistics for a quiz</a> 67%(a percentage for how well the students have done this quiz. Lowest percentage at the top of the list)
+                    <div class="panel-body" style="line-height: 22px;">
+
+                    <?php //henter quizer i fag og statistikk
+                    $sql = mysqli_query($connection, "SELECT qid, name FROM quiz WHERE classid=(SELECT classid from class where classname='$classname')");
+                    while ($row = $sql->fetch_assoc()){
+                                $qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$row['name']."'")->fetch_assoc();
+                                $questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
+                                $totalCorrect = 0;
+                                $totalQuestions = 0;
+                                while ($scoreCalculator = $questionIDs->fetch_assoc()){
+                                    $currQuestion = mysqli_query($connection, "SELECT question FROM questions WHERE qid=".$scoreCalculator['queid'])->fetch_assoc();
+                                    $currScore = mysqli_query($connection, "SELECT answer FROM hasAnsweredQuestion WHERE qid=".$scoreCalculator['qid']." AND questid=".$scoreCalculator['queid']);
+                                    while ($score = $currScore->fetch_assoc()) {
+                                        if ($score['answer']==1) {
+                                            $totalCorrect++;
+                                            $totalQuestions++;
+                                        }
+                                        else {
+                                            $totalQuestions++;
+                                        }
+                                    }
+                                }
+                                $totalScorePercent = ($totalCorrect/$totalQuestions)*100;
+                                $oneDecimalScore = number_format($totalScorePercent, 1);
+
+                                if (($totalScorePercent <= 100) && (0 <= $totalScorePercent)) {
+                                    echo "<a href='statisticsTeacher.php?quizId=".$row['qid']."'>".$row['name']."</a><div style='float: right';>".$oneDecimalScore."%</div></br>";
+                                }
+                                else {
+                                    echo "<a href='statisticsTeacher.php?quizId=".$row['qid']."'>".$row['name']."</a><div style='float: right';>Not answered yet</div></br>";
+                                }
+
+
+
+
+                        }?>
                 </div>
             </div>
         </div>
