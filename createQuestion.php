@@ -24,11 +24,11 @@ function showQuiz($connection,$qid){
 	$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
 	$count= mysqli_num_rows ( $result );
 	mysqli_close();
-	if($count==1){
+	//if($count==1){
     	$row = mysqli_fetch_array ( $result );
     	$quizName=$row['name'];
     	return $quizName;
-	}
+	//}
 }
 $quizName=showQuiz($connection, $_GET['id']);
 //lager question

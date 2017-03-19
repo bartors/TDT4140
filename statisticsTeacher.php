@@ -9,21 +9,25 @@ error_reporting(E_ALL);
 
 session_start();
 require 'connect.php';
+require 'lib/functions.php';
 //setter lokale variabler utifraa session's variabler
 $username=$_SESSION['username'];
 $password=$_SESSION['password'];
 $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
 //setter opp query for å hente info om brukeren
-$quizId=$_GET['quizId'];
-
-$getQuizName = mysqli_fetch_assoc(mysqli_query($connection, "SELECT name FROM quiz WHERE qid = '$quizId'"));
-$quizName = $getQuizName['name'];
-
-$_SESSION['classname']=$classname;
+//$quizId=$_GET['quizId'];
+//$getQuizName = mysqli_fetch_assoc(mysqli_query($connection, "SELECT name FROM quiz WHERE qid = '$quizId'"));
+//$quizName = $getQuizName['name'];
+//henter quizName
+$quizName=showQuiz($connection, $_GET['quizId']);
+/*$_SESSION['classname']=$classname;
 $showQuizes="SELECT qid,name,active from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
 $quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $connection ) );
-$count = mysqli_num_rows ( $quizes );
+$count = mysqli_num_rows ( $quizes );*/
+//show quizes
+$quizes=showQuizes($connection, $_SESSION['classname']);
+$count=mysqli_num_rows($quizes);
 
 ?>
 <!DOCTYPE html>
@@ -115,7 +119,7 @@ $count = mysqli_num_rows ( $quizes );
                         <div class="panel-heading"><?php echo $quizName." - Statistics"; ?></div>
                         <div class="panel-body">
                             <?php
-                            	$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
+                            	/*$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
                             	$questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
                             	$i = 1;
                             	$totalCorrect = 0;
@@ -157,8 +161,8 @@ $count = mysqli_num_rows ( $quizes );
                             		echo "<strong>Total score: ".$oneDecimalScore." %</strong>";
                             	}
                             	else {
-                            	}
-
+                            	}*/
+								teacherStatistics($connection, $quizName);
                             ?>
                         </div>
                 </div>
