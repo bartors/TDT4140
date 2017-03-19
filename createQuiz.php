@@ -268,7 +268,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 								</br>
 								</br>
 								<?php 
-								echo "<a href='coursePageTeacher.php?id=".$username."' class='btn btn-default'>Create quiz</a>";
+								echo "<a href='coursePageTeacher.php?id=".$_SESSION['classname']."' class='btn btn-default'>Create quiz</a>";
 								?>
 							</div>
 						</form>
