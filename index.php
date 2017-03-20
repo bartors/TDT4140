@@ -82,7 +82,7 @@ function login($usrname,$pswrd){
 
 function mainPageHeader(){
 	if ($_SESSION ['role'] == 'T') {
-		header ( 'Location:mainAsTeacher.php' );
+		header ( 'Location:teacher/mainAsTeacher.php' );
 	} else {
 		header ( 'Location:mainAsStudent.php' );
 	}
@@ -104,7 +104,7 @@ if (isset ( $_SESSION ['username'] )) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="css/index.css">
  
 </head>
 <body>
