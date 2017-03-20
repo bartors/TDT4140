@@ -2,6 +2,7 @@
 
 session_start();
 require 'connect.php';
+require 'lib/functions.php';
 //setter lokale variabler utifraa session's variabler
 $username=$_SESSION['username'];
 $password=$_SESSION['password'];
@@ -9,9 +10,9 @@ $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
 $classname=$_SESSION['classname'];
 //skriver ut navnet op quizen
-function displayQuizName($quizName){
+/*function displayQuizName($quizName){
 	echo "<h2>".$quizName."</h2>";
-}
+}*/
 //finner spørsmål
 function showQuestions($connection,$classname){
 	$query = "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')";
