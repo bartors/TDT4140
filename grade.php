@@ -116,7 +116,8 @@ $query = "SELECT * FROM users WHERE username='$username' and  password='$passwor
                                     </div>";
                                     
                             
-                            //Sjekker om dette spørsmålet har blitt besvart fra før:
+                            if ($role = 'S') {
+                                //Sjekker om dette spørsmålet har blitt besvart fra før:
                             $ifExists = mysqli_query($connection, "SELECT * FROM hasAnsweredQuestion where userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1]);
                                                  
                             
@@ -145,6 +146,7 @@ $query = "SELECT * FROM users WHERE username='$username' and  password='$passwor
                             //Gjennomfører oppdatering
                             mysqli_query($connection,$query);
                             
+                            }
 
 
 
