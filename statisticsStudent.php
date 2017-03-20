@@ -2,42 +2,58 @@
 
 session_start ();
 require 'connect.php';
+require 'lib/functions.php';
 // setter lokale variabler utifraa session's variabler
 $username = $_SESSION ['username'];
 $password = $_SESSION ['password'];
 $role = $_SESSION ['role'];
 $userid = $_SESSION ['userid'];
 $quizId = $_GET['quizId'];
-// setter opp query for å hente info om brukeren
-$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
-function error($string) {
-	if ($string == "Column 'classid' cannot be null") {
-		print 'Denne klassen er ikke i vår database, har du stavet riktig?';
-	} else {
-		print 'Noe gikk feil. Være så snill, kontakt våre utviklere.';
-	}
-	echo "<p><a href='classMate.php'>Tilbake til hovedsiden</a>";
-	exit ();
-}
-if (isset ( $_POST ['classname'] )) {
-	$classname = $_POST ['classname'];
-	$query = "INSERT INTO attends(userid,classid) values('$userid',(SELECT classid FROM class WHERE classname='$classname'))";
-	// utører sqloperasjonen eller skriver ut en feilmelding
-	$result = mysqli_query ( $connection, $query ) or error ( mysqli_error ( $connection ) );
-	unset ( $classname );
-	unset ( $_POST ['classname'] );
-	header ( 'Location:attendsClass.php' );
-}
-
 //henter quiznavn
-$getQuizName = mysqli_fetch_assoc(mysqli_query($connection, "SELECT name FROM quiz WHERE qid = '$quizId'"));
-$quizName = $getQuizName['name'];
+/*function getQuizName($connection,$quizzId){
+	$query="SELECT name FROM quiz WHERE qid = '$quizId'";
+	$result=mysqli_query($connection, $query);
+	$getQuizName = mysqli_fetch_assoc($result);
+	return $getQuizName['name'];
+}*/
 
-//Printer ut klasser du er i
-$showClasses = "SELECT classname from class join attends on class.classid=attends.classid where attends.userid='$userid'";
+
+$quizName = showQuiz($connection,$_GET['quizId']);
+
+
+/*$showClasses = "SELECT classname from class join attends on class.classid=attends.classid where attends.userid='$userid'";
 $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
-$count = mysqli_num_rows ( $classes );
-
+$count = mysqli_num_rows ( $classes );*/
+function studentStatistics($connection,$quizName,$userid){
+	$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
+	$questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
+	$i = 1;
+	$totalCorrect = 0;
+	$totalQuestions = 0;
+	while ($row = $questionIDs->fetch_assoc()){
+		$currQuestion = mysqli_query($connection, "SELECT question FROM questions WHERE qid=".$row['queid'])->fetch_assoc();
+		$currScore = mysqli_query($connection, "SELECT answer FROM hasAnsweredQuestion WHERE qid='".$row['qid']."' AND questid='".$row['queid']."' AND userid = '".$userid."'");
+		while ($score = $currScore->fetch_assoc()) {
+			if ($score['answer']==1) {
+				$totalCorrect++;
+				$totalQuestions++;
+				$grade = "<div style='float: right; color: green;'>Correct</div>";
+			}
+			else {
+				$totalQuestions++;
+				$grade = "<div style='float: right; color: red;'>Wrong</div>";
+			}
+		}
+	
+		foreach ($currQuestion as $key => $val) {
+			echo $i.". ".$val.$grade."</br>";
+		}
+		$i++;
+	}
+	echo "<strong>Total score: ".$totalCorrect."/".$totalQuestions."</strong>";
+	
+	
+}
 ?>
 
 <!DOCTYPE html>
@@ -119,7 +135,7 @@ $count = mysqli_num_rows ( $classes );
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<h2>ClassMate - Student</h2>
+					<?php displayQuizName($quizName);?>
 				</div>
 			</div>
 			</br>
@@ -129,7 +145,7 @@ $count = mysqli_num_rows ( $classes );
                         <div class="panel-heading"><?php echo $quizName." - Statistics" ?></div>
                         <div class="panel-body">
                             <?php
-                            	$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
+                            	/*$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
                             	$questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
                             	$i = 1;
                             	$totalCorrect = 0;
@@ -155,8 +171,8 @@ $count = mysqli_num_rows ( $classes );
 									$i++;
                             	}
                             	echo "<strong>Total score: ".$totalCorrect."/".$totalQuestions."</strong>";
-
-
+*/
+studentStatistics($connection, $quizName,$_SESSION['userid']);
                             ?>
                         </div>
                 </div>
@@ -165,7 +181,7 @@ $count = mysqli_num_rows ( $classes );
                     <div class="panel panel-default" style="width:100%;">
                         <div class="panel-heading">Options</div>
                         <div class="panel-body">
-                            <a href="quizPage.php?">Do this quiz again</a>
+                            <?php echo "<a href='quizPage.php?quiz=".$quizName."'>Do this quiz again</a>";?>
                         </div>
                     </div>
                 </div>
