@@ -7,18 +7,25 @@ $username   =$_SESSION['username'];
 $password   =$_SESSION['password'];
 $role       =$_SESSION['role'];
 $userid     =$_SESSION['userid'];
-$classname  =$_SESSION['classname'];
-$qid        =$_GET['id'];
 $currQuiz   =$_GET['quiz'];
 
+function showClassName($connection,$quizName){
+$getClassName = "SELECT classname from class join quiz on (SELECT classid from quiz where name='$quizName')=class.classid";
+$result = mysqli_query ( $connection, $getClassName ) or die ( mysqli_error ( $connection ) );
+mysqli_close();
+$row = mysqli_fetch_array ( $result );
+$className=$row['classname'];
+return $className;
+}
+$classname=showClassName($connection, $_GET['quiz']);
 //setter opp query for å hente info om quizen
-$showQuizName="select name from quiz where qid='$qid'";
+/*$showQuizName="select name from quiz where qid='$qid'";
 $result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
 $count= mysqli_num_rows ( $result );
 if($count==1){
     $row = mysqli_fetch_array ( $result );
     $quizName=$row['name'];
-}
+}*/
 
 function popQuiz($connection, $currQuiz)
 {
@@ -152,7 +159,7 @@ function popQuiz($connection, $currQuiz)
                             ?>
 
                         </ol>
-                   <?php  echo "<a href='coursePageStudent.php?id=".$_SESSION['classname']."' class='btn btn-link'>Back</a>" ?>
+                   <?php  echo "<a href='coursePageStudent.php?id=".$classname."' class='btn btn-link'>Back</a>" ?>
                     <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 40px;" />
 
             
