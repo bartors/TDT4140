@@ -10,6 +10,7 @@ $userid     =$_SESSION['userid'];
 $classname  =$_SESSION['classname'];
 $qid        =$_GET['id'];
 $currQuiz   =$_GET['quiz'];
+
 //setter opp query for å hente info om quizen
 $showQuizName="select name from quiz where qid='$qid'";
 $result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
@@ -18,6 +19,59 @@ if($count==1){
     $row = mysqli_fetch_array ( $result );
     $quizName=$row['name'];
 }
+
+function popQuiz($connection, $currQuiz)
+{
+    $qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$currQuiz."'")->fetch_assoc();
+
+    //Holder styr på forrige (denne) quizen for grade.php
+    $_SESSION['lastQuiz'] = $qid['qid'];
+    $questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
+
+    //Setter opp et array for de rette svarene
+    $corrAns = array();
+    $questionNumber = 1;
+
+
+    while ($row = $questionIDs->fetch_assoc()){
+        $currQuestion = mysqli_query($connection, "SELECT * FROM questions WHERE qid=".$row['queid'])->fetch_assoc();
+        $corrAns[] = [$currQuestion['Ans'], $currQuestion['qid']];
+
+
+        echo "<li>
+    
+        <h3>".$currQuestion['question']."</h3>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-A' value='A' />
+            <label for='question-".$questionNumber."-answers-A'>A) ".$currQuestion['A']." </label>
+        </div>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-B' value='B' />
+            <label for='question-".$questionNumber."-answers-B'>B) ".$currQuestion['B']." </label>
+        </div>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-C' value='C' />
+            <label for='question-".$questionNumber."-answers-C'>C) ".$currQuestion['C']." </label>
+        </div>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-D' value='D' />
+            <label for='question-".$questionNumber."-answers-D'>D) ".$currQuestion['D']." </label>
+        </div>
+    
+        </li>";
+        $questionNumber++;
+        }
+
+    //Gjør korrekte svar til sessionvariabel
+    $_SESSION['corrAns']     = $corrAns;
+}
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -94,52 +148,7 @@ if($count==1){
                     <form action="grade.php" method="post" id="quiz">
                         <ol>
                             <?php 
-                            $qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$currQuiz."'")->fetch_assoc();
-                            //Holder styr på forrige (denne) quizen for grade.php
-                            $_SESSION['lastQuiz']    = $qid['qid'];
-                            $questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
-                            //Setter opp et array for de rette svarene
-                            $corrAns = array();
-                            $questionNumber = 1;
-
-
-                            while ($row = $questionIDs->fetch_assoc()){
-                                $currQuestion = mysqli_query($connection, "SELECT * FROM questions WHERE qid=".$row['queid'])->fetch_assoc();
-                                $corrAns[] = [$currQuestion['Ans'], $currQuestion['qid']];
-
-
-                                echo "<li>
-                            
-                                <h3>".$currQuestion['question']."</h3>
-                                
-                                <div>
-                                    <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-A' value='A' />
-                                    <label for='question-".$questionNumber."-answers-A'>A) ".$currQuestion['A']." </label>
-                                </div>
-                                
-                                <div>
-                                    <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-B' value='B' />
-                                    <label for='question-".$questionNumber."-answers-B'>B) ".$currQuestion['B']." </label>
-                                </div>
-                                
-                                <div>
-                                    <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-C' value='C' />
-                                    <label for='question-".$questionNumber."-answers-C'>C) ".$currQuestion['C']." </label>
-                                </div>
-                                
-                                <div>
-                                    <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-D' value='D' />
-                                    <label for='question-".$questionNumber."-answers-D'>D) ".$currQuestion['D']." </label>
-                                </div>
-                            
-                                </li>";
-                                $questionNumber++;
-                                
-                                }
-
-                            //Gjør korrekte svar til sessionvariabel
-                            $_SESSION['corrAns']     = $corrAns;
-                            
+                                popQuiz($connection, $currQuiz);
                             ?>
 
                         </ol>
