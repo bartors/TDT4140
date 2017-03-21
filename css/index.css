@@ -1,0 +1,56 @@
+.jumbotron{
+	margin-top: 2%;
+	box-shadow: 0px 2.5px 10px 10px rgba(0, 0, 0, 0.5);
+	background-color: #12b24b;
+}
+
+.jumbotron h1{
+	max-width: 1000px;
+	min-width: 250;
+	margin: auto;
+}
+
+.login-group{
+	max-width: 250px;
+	margin: auto;
+}
+
+
+.form-control{
+	height: 40px;
+	border: 1px;
+	border-radius: 0px;
+}
+
+.submitBtn{
+	background-color: #34a527;
+    color: white;
+    border: 2px solid #437f33; 
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    width: 250px;
+    height: 40px;
+    font-size: 18;
+}
+
+.submitBtn:hover {
+    background-color: white;
+    color: #34a527;
+    border: 2px solid #437f33;
+}
+
+.buttonHolder{ 
+	text-align: center;
+	color: white;
+
+}
+
+a{
+	color: #FFF;
+}
+
+p{
+	color: #FFF;
+	font-size: 1px;
+	display: inline;
+}

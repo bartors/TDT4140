@@ -84,7 +84,7 @@ function mainPageHeader(){
 	if ($_SESSION ['role'] == 'T') {
 		header ( 'Location:teacher/mainAsTeacher.php' );
 	} else {
-		header ( 'Location:mainAsStudent.php' );
+		header ( 'Location:student/mainAsStudent.php' );
 	}
 }
 // 3.1.4 if the user is logged in Greets the user with message
