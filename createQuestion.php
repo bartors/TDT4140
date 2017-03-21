@@ -16,24 +16,37 @@ $d=$_POST['D'];
 $ans=$_POST['group1'];
 $topic=$_POST['topic'];
 $qid=$_GET['id'];
-
-//setter opp query for å hente info om quizen
 $currQuiz = $_GET['quiz'];
-$showQuizName="select name from quiz where qid='$qid'";
-$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
-$count= mysqli_num_rows ( $result );
-if($count==1){
-    $row = mysqli_fetch_array ( $result );
-    $quizName=$row['name'];
+//setter opp query for å hente info om quizen
+//HVA BRUKES DET TIL????
+function showQuiz($connection,$qid){
+	$showQuizName="select name from quiz where qid='$qid'";
+	$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
+	$count= mysqli_num_rows ( $result );
+	mysqli_close();
+	//if($count==1){
+    	$row = mysqli_fetch_array ( $result );
+    	$quizName=$row['name'];
+    	return $quizName;
+	//}
 }
-
-//setter opp query for å hente info om brukeren
-if(isset($_POST['group1'])){
+$quizName=showQuiz($connection, $_GET['id']);
+//lager question
+function makeQuestion($connection,$qid,$classname,$question,$a,$b,$c,$d,$ans,$topic){
 	$makeQuestion = "INSERT INTO questions(classid,question,A,B,C,D,Ans,tema) values((SELECT classid FROM class WHERE classname='$classname'),'$question','$a','$b','$c','$d','$ans','$topic') ";
+	$putIntoQuiz = "INSERT INTO hasQuestions values($qid,(SELECT qid FROM questions WHERE question='$question')) ";
+	$result = mysqli_query ( $connection, $makeQuestion) or die ( mysqli_error ( $connection ) );
+	$result = mysqli_query ( $connection, $putIntoQuiz) or die ( mysqli_error ( $connection ) );
+	header("Location:createQuiz.php?id=".$qid);
+	}
+if(isset($_POST['group1'])){
+	/*$makeQuestion = "INSERT INTO questions(classid,question,A,B,C,D,Ans,tema) values((SELECT classid FROM class WHERE classname='$classname'),'$question','$a','$b','$c','$d','$ans','$topic') ";
     $putIntoQuiz = "INSERT INTO hasQuestions values($qid,(SELECT qid FROM questions WHERE question='$question')) ";
 	$result = mysqli_query ( $connection, $makeQuestion) or die ( mysqli_error ( $connection ) );
     $result = mysqli_query ( $connection, $putIntoQuiz) or die ( mysqli_error ( $connection ) );
-header("Location:createQuiz.php?id=".$qid);
+	header("Location:createQuiz.php?id=".$qid);
+*/
+makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'], $_POST['A'], $_POST['B'], $_POST['C'], $_POST['D'], $_POST['group1'], $_POST['topic']);
 }
 ?>
 <!DOCTYPE html>

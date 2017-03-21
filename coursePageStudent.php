@@ -12,6 +12,12 @@ $userid=$_SESSION['userid'];
 $query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
 $classname=$_GET['id'];
 $_SESSION['classname']=$classname;
+function displayActiveQuizes($connection,$classname){
+	$sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
+	while ($row = $sql->fetch_assoc()){
+		echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,10 +103,10 @@ $_SESSION['classname']=$classname;
                             
                             <!--GET QUIZES-->
                             <?php
-                            $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
+                           /* $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
                             while ($row = $sql->fetch_assoc()){
                             echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
-                            }?>
+                            }*/displayActiveQuizes($connection, $_SESSION['classname']);?>
                             
 
                         </div>

@@ -3,10 +3,33 @@
 session_start ();
 require ('connect.php');
 ini_set('display_errors', 1);
+$_SESSION['connection']=$connection;
+
+function recoverPassword($email){
+	//$email = $_POST['email'];
+	$query = mysqli_query($_SESSION['connection'], "SELECT * FROM users WHERE email='".$email."'");
+	if(mysqli_num_rows($query) == 1){
+		while ($row = mysqli_fetch_assoc($query)) {
+			$sendUsername = $row['username'];
+			$sendPassword = $row['password'];
+		}
+		//Email sender
+		$to = $email;
+		$subject = "Password reminder";
+		$txt = "Hello " . $sendUsername . "!\nYour password is: " . $sendPassword;
+		$headers = "From: noreply@classmate.com" . "\r\n";
+		mail($to,$subject,$txt,$headers);
+	}else{
+		// do something
+		if (!mysqli_query($_SESSION['connection'],"SELECT * FROM users WHERE email='".$email."'")){
+			die('Error: ' . mysqli_error($_SESSION['connection']));
+		}
+	}
+}
 
 //PASSWORD RECOVERY
 if (isset($_POST['email'])) {
-	$email = $_POST['email'];
+	/*$email = $_POST['email'];
 	$query = mysqli_query($connection, "SELECT * FROM users WHERE email='".$email."'");
 	if(mysqli_num_rows($query) == 1){
 		while ($row = mysqli_fetch_assoc($query)) {
@@ -22,27 +45,29 @@ if (isset($_POST['email'])) {
 	}
 	else{
 		// do something
-		if (!mysqli_query($connection,$query)){
+		if (!mysqli_query($connection,"SELECT * FROM users WHERE email='".$email."'")){
 		    die('Error: ' . mysqli_error($connection));
 		}
-	}
+	}*/
+	recoverPassword($_POST['email']);
 }
 
 
 // 3. If the form is submitted or not.
 // 3.1 If the form is submitted
 if (isset ( $_POST ['username'] ) and isset ( $_POST ['password'] )) {
-	// 3.1.1 Assigning posted values to variables.
-	$username = $_POST ['username'];
-	$password = $_POST ['password'];
+	$fmsg=login($_POST['username'], $_POST['password']);
+}
+function login($usrname,$pswrd){
+	$username = $usrname;
+	$password = $pswrd;
 	// 3.1.2 Checking the values are existing in the database or not
 	$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
 	
-	$result = mysqli_query ( $connection, $query ) or die ( mysqli_error ( $connection ) );
+	$result = mysqli_query ( $_SESSION['connection'], $query ) or die ( mysqli_error ( $_SESSION['connection'] ) );
 	$count = mysqli_num_rows ( $result );
 	while ( $row = mysqli_fetch_assoc ( $result ) ) {
 		$_SESSION ['role'] = $row ['role'];
-		$role = $_SESSION ['role'];
 		$_SESSION ['userid'] = $row ['userid'];
 	}
 	// 3.1.2 If the posted values are equal to the database values, then session will be created for the user.
@@ -51,16 +76,21 @@ if (isset ( $_POST ['username'] ) and isset ( $_POST ['password'] )) {
 		$_SESSION ['password'] = $password;
 	} else {
 		// 3.1.3 If the login credentials doesn't match, he will be shown with an error message.
-		$fmsg = "Invalid Login Credentials.";
+		return "Invalid Login Credentials.";
 	}
 }
-// 3.1.4 if the user is logged in Greets the user with message
-if (isset ( $_SESSION ['username'] )) {
+
+function mainPageHeader(){
 	if ($_SESSION ['role'] == 'T') {
 		header ( 'Location:mainAsTeacher.php' );
 	} else {
 		header ( 'Location:mainAsStudent.php' );
 	}
+}
+// 3.1.4 if the user is logged in Greets the user with message
+if (isset ( $_SESSION ['username'] )) {
+	mainPageHeader();
+	
 } else {
 	// 3.2 When the user visits the page first time, simple login form will be displayed.
 	?>

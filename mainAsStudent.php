@@ -7,7 +7,8 @@ $password = $_SESSION ['password'];
 $role = $_SESSION ['role'];
 $userid = $_SESSION ['userid'];
 // setter opp query for å hente info om brukeren
-$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
+//$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
+//skriver ut error
 function error($string) {
 	if ($string == "Column 'classid' cannot be null") {
 		print 'Denne klassen er ikke i vår database, har du stavet riktig?';
@@ -17,29 +18,38 @@ function error($string) {
 	echo "<p><a href='mainAsStudent.php'>Tilbake til hovedsiden</a>";
 	exit ();
 }
-if (isset ( $_POST ['classname'] )) {
+//legger til en klasse for studenten
+function attends($connection,$classname,$userid){
 	$classname = $_POST ['classname'];
 	$query = "INSERT INTO attends(userid,classid) values('$userid',(SELECT classid FROM class WHERE classname='$classname'))";
 	// utører sqloperasjonen eller skriver ut en feilmelding
 	$result = mysqli_query ( $connection, $query ) or error ( mysqli_error ( $connection ) );
-	unset ( $classname );
+	mysqli_close();
+}
+if (isset ( $_POST ['classname'] )) {
+	attends($connection, $_POST['classname'], $_SESSION['userid']);
 	unset ( $_POST ['classname'] );
 	header ( 'Location:mainAsStudent.php' );
 }
-//Printer ut klasser du er i
+//Skriver ut klasser du er i
+function showClassesStudent($connection,$userid){
 $showClasses = "SELECT classname, class.classid from class join attends on class.classid=attends.classid where attends.userid='$userid'";
 $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
+mysqli_close();
+return $classes;
+}
+$classes=showClassesStudent($connection, $_SESSION['userid']);
 $count = mysqli_num_rows ( $classes );
-
 //sletter klassen
-if(isset($_POST['delete'])){
-	$classid=$_POST['delete'];
+function stopAttending($connection,$userid,$classid){
 	$deleteAttends="delete from attends where classid='$classid' and userid='$userid'";
 	$result = mysqli_query ( $connection, $deleteAttends ) or die ( mysqli_error ( $connection ) );
 	mysqli_close();
 	header('Location:mainAsStudent.php');
 }
-
+if(isset($_POST['delete'])){
+ stopAttending($connection, $_SESSION['userid'], $_POST['delete']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -162,7 +172,41 @@ if(isset($_POST['delete'])){
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading">Statistics</div>
 						<div class="panel-body">
-							<a href="statisticsStudent.php">Statistics for a quiz</a> 67%(a percentage for how well the students have done this quiz. Lowest percentage at the top of the list)
+							
+							<?php //henter quizer i fag og statistikk
+							$getQuizzes = mysqli_query($connection, "SELECT DISTINCT qid FROM hasAnsweredQuestion WHERE userid = '".$userid."'");
+							while ($row = $getQuizzes->fetch_assoc()){
+								$getQuizName = mysqli_query($connection, "SELECT qid, name FROM quiz WHERE qid = '".$row['qid']."'");
+								while ($quizName = $getQuizName->fetch_assoc()){
+									
+	                                $questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$quizName['qid']."'");
+	                                $totalCorrect = 0;
+	                                $totalQuestions = 0;
+	                                while ($scoreCalculator = $questionIDs->fetch_assoc()){
+	                                    $currQuestion = mysqli_query($connection, "SELECT question FROM questions WHERE qid=".$scoreCalculator['queid'])->fetch_assoc();
+	                                    $currScore = mysqli_query($connection, "SELECT answer FROM hasAnsweredQuestion WHERE qid='".$scoreCalculator['qid']."' AND questid='".$scoreCalculator['queid']."' AND userid = '".$userid."'");
+	                                    while ($score = $currScore->fetch_assoc()) {
+	                                        if ($score['answer']==1) {
+	                                            $totalCorrect++;
+	                                            $totalQuestions++;
+	                                        }
+	                                        else {
+	                                            $totalQuestions++;
+	                                        }
+	                                    }
+	                                }
+
+
+									echo "<a href='statisticsStudent.php?quizId=".$quizName['qid']."'>".$quizName['name']."</a><div style='float: right';>".$totalCorrect."/".$totalQuestions."</div></br>";
+								}
+							}	
+
+
+
+
+
+                      		?>
+
 						</div>
 					</div>
 				</div>

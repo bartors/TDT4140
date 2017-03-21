@@ -152,7 +152,7 @@ function popQuiz($connection, $currQuiz)
                             ?>
 
                         </ol>
-                    <a href="coursePageStudent.php" class="btn btn-link">Back</a>
+                   <?php  echo "<a href='coursePageStudent.php?id=".$_SESSION['classname']."' class='btn btn-link'>Back</a>" ?>
                     <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 40px;" />
 
             
