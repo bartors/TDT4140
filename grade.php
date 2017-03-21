@@ -19,6 +19,66 @@ $lastQuiz   =   $_SESSION['lastQuiz'];
 //setter opp query for å hente info om brukeren
 $query = "SELECT * FROM users WHERE username='$username' and  password='$password'";
 
+function popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQuiz)
+{
+    $noOfCorrect = 0;
+
+    //Her er det noe "off by one" tull. corrAns er 1-indeksert?!
+    for ($i=0; $i < sizeof($corrAns); $i++) { 
+
+        $answer = $_POST['question-'.($i+1).'-answers'];
+
+        echo "<li>
+        
+                <h3>
+                    Question ".($i+1).": 
+                </h3>
+                
+                <div>
+                    Your answer: $answer<br>".$corrAns[$i][0]." was correct.
+
+                </div>";
+                
+        
+        if ($role == 'S') {
+            //Sjekker om dette spørsmålet har blitt besvart fra før:
+            $ifExists = mysqli_query($connection, "SELECT * FROM hasAnsweredQuestion where userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1]);
+                                 
+            
+            if (mysqli_num_rows($ifExists) > 0) {
+                //Oppdaterer spørsmål i DB
+                if ($corrAns[$i][0] == $answer) {
+                    $query = "UPDATE hasAnsweredQuestion SET answer=1 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
+                    $noOfCorrect++;
+                    
+                }
+                else{
+                    $query = "UPDATE hasAnsweredQuestion SET answer=0 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
+                }
+
+            }else{
+                //Lagrer nytt besvart spørsmål i DB
+                if ($corrAns[$i][0] == $answer) {
+                    $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 1)";
+                    $noOfCorrect++;
+                }
+                else{
+                    $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 0)";
+                }
+            }
+            
+            //Gjennomfører oppdatering
+            mysqli_query($connection,$query);
+            
+        }
+    }
+
+    echo "
+        <div> <br>
+            You answered ".$noOfCorrect."/".sizeof($corrAns)." questions correctly.
+        </div>";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -96,73 +156,8 @@ $query = "SELECT * FROM users WHERE username='$username' and  password='$passwor
                     <h1>Results</h1>
                     <ol>
                         <?php
-
-                        $noOfCorrect = 0;
-
-                        //Her er det noe "off by one" tull. corrAns er 1-indeksert?!
-                        for ($i=0; $i < sizeof($corrAns); $i++) { 
-
-                            $answer = $_POST['question-'.($i+1).'-answers'];
-
-                            echo "<li>
-                            
-                                    <h3>
-                                        Question ".($i+1).": 
-                                    </h3>
-                                    
-                                    <div>
-                                        Your answer: $answer<br>".$corrAns[$i][0]." was correct.
-
-                                    </div>";
-                                    
-                            
-                            if ($role = 'S') {
-                                //Sjekker om dette spørsmålet har blitt besvart fra før:
-                            $ifExists = mysqli_query($connection, "SELECT * FROM hasAnsweredQuestion where userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1]);
-                                                 
-                            
-                            if (mysqli_num_rows($ifExists) > 0) {
-                                //Oppdaterer spørsmål i DB
-                                if ($corrAns[$i][0] == $answer) {
-                                    $query = "UPDATE hasAnsweredQuestion SET answer=1 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
-                                    $noOfCorrect++;
-                                    
-                                }
-                                else{
-                                    $query = "UPDATE hasAnsweredQuestion SET answer=0 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
-                                }
-
-                            }else{
-                                //Lagrer nytt besvart spørsmål i DB
-                                if ($corrAns[$i][0] == $answer) {
-                                    $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 1)";
-                                    $noOfCorrect++;
-                                }
-                                else{
-                                    $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 0)";
-                                }
-                            }
-                            
-                            //Gjennomfører oppdatering
-                            mysqli_query($connection,$query);
-                            
-                            }
-
-
-
-
-
-                        }
-
-                        echo "
-                            <div> <br>
-                                You answered ".$noOfCorrect."/".sizeof($corrAns)." questions correctly.
-                            </div>";
-                        
-                        
-                        
-                        
-                    ?>
+                            popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQuiz);
+                        ?>
                     </ol>
                 
                 </div>
