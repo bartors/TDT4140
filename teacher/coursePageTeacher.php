@@ -188,7 +188,7 @@ if (isset ( $_POST ['activStat'] )) {
 					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username?></a>
 					
 					<li>
-                        <?php echo"<a href='logout.php'>Log out</a>"?>
+                        <?php echo"<a href='../logout.php'>Log out</a>"?>
                     </li>
 				</ul>
 			</div>
