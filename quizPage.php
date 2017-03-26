@@ -159,8 +159,8 @@ function popQuiz($connection, $currQuiz)
                             ?>
 
                         </ol>
-                   <?php  echo "<a href='coursePageStudent.php?id=".$classname."' class='btn btn-link'>Back</a>" ?>
-                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 40px;" />
+                   <?php  echo "<button class='btn btn-default' style='margin-left: 30px;' onclick='goBack()''>Back</button>" ?>
+                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 5px;" />
 
             
                     </form>
@@ -206,6 +206,12 @@ function popQuiz($connection, $currQuiz)
         </a>
     </div>
 
+    <!-- script for tilbakeknappen -->
+    <script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
     
 
     <!-- jQuery -->

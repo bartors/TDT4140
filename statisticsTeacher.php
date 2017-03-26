@@ -116,7 +116,7 @@ $count=mysqli_num_rows($quizes);
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading"><?php echo $quizName." - Statistics"; ?></div>
+                        <div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  <?php echo $quizName." - Statistics"; ?></div>
                         <div class="panel-body">
                             <?php
                             	/*$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
@@ -169,7 +169,7 @@ $count=mysqli_num_rows($quizes);
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading">Options</div>
+                        <div class="panel-heading"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  Options</div>
                         <div class="panel-body">
                             <a href="#">Push this quiz to students</a></br>
                             <a href="createQuiz.php">Create new quiz</a>

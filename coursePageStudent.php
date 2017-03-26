@@ -97,7 +97,7 @@ function displayActiveQuizes($connection,$classname){
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading">Live quizzes</div>
+                        <div class="panel-heading"><span class="glyphicon glyphicon-record" aria-hidden="true"></span>  Live quizzes</div>
                         <div class="panel-body">
 
                             
@@ -114,7 +114,7 @@ function displayActiveQuizes($connection,$classname){
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
-                    <div class="panel-heading">Repetition quizzes created just for you</div>
+                    <div class="panel-heading"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  Spaced repetition</div>
                     <div class="panel-body"><a href="quizPage.php">a repetition quiz</a>
                     </div>
                 </div>
@@ -123,8 +123,7 @@ function displayActiveQuizes($connection,$classname){
 
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
-                    <div class="panel-heading">Course quizzes
-                    </div>
+                    <div class="panel-heading"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>  Course quizzes</div>
                     <div class="panel-body">
 
                         <!--GET QUIZES-->
