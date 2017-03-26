@@ -142,7 +142,7 @@ function studentStatistics($connection,$quizName,$userid){
 			            <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading"><?php echo $quizName." - Statistics" ?></div>
+                        <div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  <?php echo $quizName." - Statistics" ?></div>
                         <div class="panel-body">
                             <?php
                             	/*$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
@@ -179,7 +179,7 @@ studentStatistics($connection, $quizName,$_SESSION['userid']);
                 </div>
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading">Options</div>
+                        <div class="panel-heading"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  Options</div>
                         <div class="panel-body">
                             <?php echo "<a href='quizPage.php?quiz=".$quizName."'>Do this quiz again</a>";?>
                         </div>

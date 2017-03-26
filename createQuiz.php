@@ -241,7 +241,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading"><?php   echo $quizName;?> - Added questions</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>  <?php   echo $quizName;?> - Added questions</div>
 						<form class="form-signin" method="POST">
 							<div class="panel-body" style="line-height: 22px;">
 							<?php
@@ -277,7 +277,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 				</div>
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Choose a topic to find questions</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Choose a topic to find questions</div>
 						<div class="panel-body">
 							<!--GET TOPICS-->
 		                    <?php
@@ -295,10 +295,10 @@ function displayQuestionsInQuiz($connection,$quizName){
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading"><?php 
 						if ($topic == '') {
-							echo "Topic: All</div>";
+							echo "<span class='glyphicon glyphicon-question-sign' aria-hidden='true'></span>  Questions in topic: All</div>";
 						}
 						else {
-							echo "Topic: ".$topic."</div>";
+							echo "<span class='glyphicon glyphicon-question-sign' aria-hidden='true'></span>  Questions in topic: ".$topic."</div>";
 						}
 
 						?>

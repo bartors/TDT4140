@@ -209,7 +209,7 @@ if (isset ( $_POST ['activStat'] )) {
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Create quizzes</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  Create quizzes</div>
 						<form class="form-signin" method="POST">
 							<div class="panel-body">
 								<input class="addCourseInput" type="text" name="quizName"
@@ -221,7 +221,7 @@ if (isset ( $_POST ['activStat'] )) {
 				</div>
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Course quizzes</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>  Course quizzes</div>
 						<div class="panel-body" style="line-height: 22px;">
                     <?php displayQuizes($count, $quizes);?>
                     </div>
@@ -231,7 +231,7 @@ if (isset ( $_POST ['activStat'] )) {
 
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Statistics</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  Statistics</div>
 						<div class="panel-body" style="line-height: 22px;">
 
                     <?php 

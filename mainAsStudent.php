@@ -138,7 +138,7 @@ if(isset($_POST['delete'])){
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">My Courses</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>  My Courses</div>
 						
 							<div class="panel-body" style="line-height: 22px;">
 								<?php 
@@ -147,7 +147,7 @@ if(isset($_POST['delete'])){
 							echo  "<form class='form-signin' method='POST'><a href='coursePageStudent.php?id=".$row['classname']."'>".$row ['classname'] ."</a><button name='delete' value=".$row['classid']." class='btn btn-default btn-xs' type='submit' style='float: right;'><span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button></br></form>";
 						}
 						} else {
-								echo "Du har ingen klasser.</br>";
+								echo "You have no classes yet.</br>";
 						}?></br>
 						<form class='form-signin' method='POST'>
 								<input class="addCourseInput" type="text" name="classname"
@@ -160,7 +160,7 @@ if(isset($_POST['delete'])){
 				</div>
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">My Quizzes</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  My Quizzes</div>
 						<div class="panel-body">
 							<a href="quizPage.php">Spaced-repetion quiz for you</a></br>
 						</div>
@@ -170,7 +170,7 @@ if(isset($_POST['delete'])){
 
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Statistics</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  Statistics</div>
 						<div class="panel-body">
 							
 							<?php //henter quizer i fag og statistikk
