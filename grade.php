@@ -50,10 +50,12 @@ function popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQui
                 if ($corrAns[$i][0] == $answer) {
                     $query = "UPDATE hasAnsweredQuestion SET answer=1 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
                     $noOfCorrect++;
+                    priorityChange($connection,($corrAns[$i][0] == $answer), $userid, $lastQuiz, $corrAns, $i);
                     
                 }
                 else{
                     $query = "UPDATE hasAnsweredQuestion SET answer=0 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
+                    priorityChange($connection,($corrAns[$i][0] == $answer), $userid, $lastQuiz, $corrAns, $i);
                 }
 
             }else{
@@ -61,9 +63,11 @@ function popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQui
                 if ($corrAns[$i][0] == $answer) {
                     $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 1)";
                     $noOfCorrect++;
+                    priorityChange($connection,($corrAns[$i][0] == $answer), $userid, $lastQuiz, $corrAns, $i);
                 }
                 else{
                     $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 0)";
+                    priorityChange($connection,($corrAns[$i][0] == $answer), $userid, $lastQuiz, $corrAns, $i);
                 }
             }
             
@@ -77,6 +81,33 @@ function popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQui
         <div> <br>
             You answered ".$noOfCorrect."/".sizeof($corrAns)." questions correctly.
         </div>";
+}
+
+
+function priorityChange($connection, $isCorrect, $userid, $lastQuiz, $corrAns, $i)
+{
+    $query = mysqli_query($connection, "SELECT priority FROM hasAnsweredQuestion where userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1]);
+    $minOrMax = mysqli_fetch_assoc($query);
+
+    if (($minOrMax['priority'] == 5) and $isCorrect) {
+        # do nothing
+
+    }
+    elseif (($minOrMax['priority'] == 1) and !$isCorrect) {
+        # do nothing
+    }
+    elseif ($isCorrect) {
+        # plusone
+        $query = "UPDATE hasAnsweredQuestion SET priority = priority + 1 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
+        mysqli_query($connection,$query);
+    }
+    else{
+        # minusone
+         $query = "UPDATE hasAnsweredQuestion SET priority = priority - 1 WHERE userid=$userid and qid=$lastQuiz and questid=".$corrAns[$i][1];
+         mysqli_query($connection,$query);
+    }
+
+    
 }
 
 ?>

@@ -12,12 +12,6 @@ $userid=$_SESSION['userid'];
 $query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
 $classname=$_GET['id'];
 $_SESSION['classname']=$classname;
-function displayActiveQuizes($connection,$classname){
-	$sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
-	while ($row = $sql->fetch_assoc()){
-		echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
-	}
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,16 +91,16 @@ function displayActiveQuizes($connection,$classname){
             <div class="row">
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading"><span class="glyphicon glyphicon-record" aria-hidden="true"></span>  Live quizzes</div>
+                        <div class="panel-heading">Live quizzes</div>
                         <div class="panel-body">
 
                             
                             <!--GET QUIZES-->
                             <?php
-                           /* $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
+                            $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
                             while ($row = $sql->fetch_assoc()){
                             echo "<a href='quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
-                            }*/displayActiveQuizes($connection, $_SESSION['classname']);?>
+                            }?>
                             
 
                         </div>
@@ -114,7 +108,7 @@ function displayActiveQuizes($connection,$classname){
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  Spaced repetition</div>
+                    <div class="panel-heading">Repetition quizzes created just for you</div>
                     <div class="panel-body"><a href="quizPage.php">a repetition quiz</a>
                     </div>
                 </div>
@@ -123,7 +117,8 @@ function displayActiveQuizes($connection,$classname){
 
             <div class="col-md-4">
                 <div class="panel panel-default" style="width:100%;">
-                    <div class="panel-heading"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>  Course quizzes</div>
+                    <div class="panel-heading">Course quizzes
+                    </div>
                     <div class="panel-body">
 
                         <!--GET QUIZES-->

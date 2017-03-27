@@ -3,30 +3,29 @@ session_start();
 require 'connect.php';
 ini_set('display_errors', 1);
 //setter lokale variabler utifraa session's variabler
-$username   =$_SESSION['username'];
-$password   =$_SESSION['password'];
-$role       =$_SESSION['role'];
-$userid     =$_SESSION['userid'];
+$username       =$_SESSION['username'];
+$password       =$_SESSION['password'];
+$role           =$_SESSION['role'];
+$userid         =$_SESSION['userid'];
+$classname      =$_SESSION['classname'];
+$qid        =$_GET['id'];
 $currQuiz   =$_GET['quiz'];
 
-function showClassName($connection,$quizName){
-$getClassName = "SELECT classname from class join quiz on (SELECT classid from quiz where name='$quizName')=class.classid";
-$result = mysqli_query ( $connection, $getClassName ) or die ( mysqli_error ( $connection ) );
-mysqli_close();
-$row = mysqli_fetch_array ( $result );
-$className=$row['classname'];
-return $className;
-}
-$classname=showClassName($connection, $_GET['quiz']);
+//Setter opp array for de rette svarene
+$corrAns = array();
+$_SESSION['corrAns']    = $corrAns;
+
 //setter opp query for å hente info om quizen
-/*$showQuizName="select name from quiz where qid='$qid'";
+$showQuizName="select name from quiz where qid='$qid'";
 $result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
 $count= mysqli_num_rows ( $result );
 if($count==1){
     $row = mysqli_fetch_array ( $result );
     $quizName=$row['name'];
-}*/
+}
 
+
+//Populater quizlisten dersom dette er et vanlig quiz
 function popQuiz($connection, $currQuiz)
 {
     $qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$currQuiz."'")->fetch_assoc();
@@ -36,7 +35,8 @@ function popQuiz($connection, $currQuiz)
     $questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
 
     //Setter opp et array for de rette svarene
-    $corrAns = array();
+    //$corrAns = array();
+    $corrans = $_SESSION['corrAns'];
     $questionNumber = 1;
 
 
@@ -75,6 +75,82 @@ function popQuiz($connection, $currQuiz)
 
     //Gjør korrekte svar til sessionvariabel
     $_SESSION['corrAns']     = $corrAns;
+}
+
+//Populater questionlisten ved et spacedrep quiz. currPri sier hvilken prioritet som gjelder, numRows sier hvor mange av hver type spørsmål vi skal forsøke å hente ut.
+function questPopper($connection, $userid, $currPri, $numRows, $questionNumber){
+    $corrAns = $_SESSION['corrAns'];
+
+
+    //Går gjennom hver kategori
+    while ($row = $currPri -> fetch_assoc() and $questionNumber < $numRows) {
+        //return heller corrans også kjører vi questionnumber som sessionvariabel
+
+        //Henter spørsmål for hver kategori
+        $currQuestion = mysqli_query($connection, "SELECT * FROM questions WHERE qid=".$row['questid'])->fetch_assoc();
+        $corrAns[] = [$currQuestion['Ans'], $currQuestion['qid']];
+
+
+        echo "<li>
+
+        <h3>".$currQuestion['question']."</h3>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-A' value='A' />
+            <label for='question-".$questionNumber."-answers-A'>A) ".$currQuestion['A']." </label>
+        </div>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-B' value='B' />
+            <label for='question-".$questionNumber."-answers-B'>B) ".$currQuestion['B']." </label>
+        </div>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-C' value='C' />
+            <label for='question-".$questionNumber."-answers-C'>C) ".$currQuestion['C']." </label>
+        </div>
+        
+        <div>
+            <input type='radio' name='question-$questionNumber-answers' id='question-".$questionNumber."-answers-D' value='D' />
+            <label for='question-".$questionNumber."-answers-D'>D) ".$currQuestion['D']." </label>
+        </div>
+
+        </li>";
+        $questionNumber++;
+        
+        
+    }
+    //Gjør korrekte svar til sessionvariabel
+    $_SESSION['corrAns']     = $corrAns;
+    return $questionNumber;
+}
+
+
+//Hovedfunksjon for spacedrep quiz
+function spacedRepQuiz($connection, $userid)
+{
+    //Kaller alle spacedrep quizzer for 666
+    $_SESSION['lastQuiz'] = 666;
+
+    //Setter opp et array for de rette svarene
+    $corrAns = array();
+    $questionNumber = 1; 
+
+    //Henter ID for gjeldene spørsmål. Dårlig kode, jeg vet
+    $pri1 = mysqli_query($connection, "SELECT DISTINCT(questid) FROM hasAnsweredQuestion JOIN questions where hasAnsweredQuestion.questID = questions.qid and priority = 1 and hasAnsweredQuestion.userid = $userid order by rand()");
+    $pri2 = mysqli_query($connection, "SELECT DISTINCT(questid) FROM hasAnsweredQuestion JOIN questions where hasAnsweredQuestion.questID = questions.qid and priority = 2 and hasAnsweredQuestion.userid = $userid order by rand()");
+    $pri3 = mysqli_query($connection, "SELECT DISTINCT(questid) FROM hasAnsweredQuestion JOIN questions where hasAnsweredQuestion.questID = questions.qid and priority = 3 and hasAnsweredQuestion.userid = $userid order by rand()");
+    $pri4 = mysqli_query($connection, "SELECT DISTINCT(questid) FROM hasAnsweredQuestion JOIN questions where hasAnsweredQuestion.questID = questions.qid and priority = 4 and hasAnsweredQuestion.userid = $userid order by rand()");
+    $pri5 = mysqli_query($connection, "SELECT DISTINCT(questid) FROM hasAnsweredQuestion JOIN questions where hasAnsweredQuestion.questID = questions.qid and priority = 5 and hasAnsweredQuestion.userid = $userid order by rand()");
+
+    //Kaller hjelpefunksjonen
+    $questionNumber = questPopper($connection, $userid, $pri1, 3, $questionNumber);
+    $questionNumber = questPopper($connection, $userid, $pri2, 3, $questionNumber);
+    $questionNumber = questPopper($connection, $userid, $pri3, 2, $questionNumber);
+    $questionNumber = questPopper($connection, $userid, $pri4, 1, $questionNumber);
+    $questionNumber = questPopper($connection, $userid, $pri5, 1, $questionNumber);
+  
+    
 }
 
 
@@ -154,13 +230,28 @@ function popQuiz($connection, $currQuiz)
                         <h2><?php echo $currQuiz;?></h2></br>
                     <form action="grade.php" method="post" id="quiz">
                         <ol>
-                            <?php 
-                                popQuiz($connection, $currQuiz);
+                            <?php
+                                if ($qid == "Spaced-repetion") {
+                                     spacedRepQuiz($connection, $userid);
+                                 }else{
+                                    popQuiz($connection, $currQuiz);
+                                 } 
                             ?>
 
                         </ol>
-                   <?php  echo "<button class='btn btn-default' style='margin-left: 30px;' onclick='goBack()''>Back</button>" ?>
-                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 5px;" />
+                    <a href="<?php
+                    if ($currQuiz != null && $role == "S") {
+                        echo "coursePageStudent.php?id=$classname";
+                    }elseif ($currQuiz != null && $role == "T") {
+                        echo "coursePageTeacher.php?id=$classname";
+                    }elseif ($role == "S"){
+                        echo "mainAsStudent.php";
+                    }else{
+                        echo "mainAsTeacher.php";
+                    }
+
+                    ?>"" class="btn btn-link">Back</a>
+                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 40px;" />
 
             
                     </form>
@@ -206,12 +297,6 @@ function popQuiz($connection, $currQuiz)
         </a>
     </div>
 
-    <!-- script for tilbakeknappen -->
-    <script>
-    function goBack() {
-        window.history.back();
-    }
-    </script>
     
 
     <!-- jQuery -->
