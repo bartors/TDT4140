@@ -3,13 +3,17 @@ session_start();
 require 'connect.php';
 ini_set('display_errors', 1);
 //setter lokale variabler utifraa session's variabler
-$username   =$_SESSION['username'];
-$password   =$_SESSION['password'];
-$role       =$_SESSION['role'];
-$userid     =$_SESSION['userid'];
-$classname  =$_SESSION['classname'];
+$username       =$_SESSION['username'];
+$password       =$_SESSION['password'];
+$role           =$_SESSION['role'];
+$userid         =$_SESSION['userid'];
+$classname      =$_SESSION['classname'];
 $qid        =$_GET['id'];
 $currQuiz   =$_GET['quiz'];
+
+//Setter opp array for de rette svarene
+$corrAns = array();
+$_SESSION['corrAns']    = $corrAns;
 
 //setter opp query for å hente info om quizen
 $showQuizName="select name from quiz where qid='$qid'";
@@ -31,7 +35,8 @@ function popQuiz($connection, $currQuiz)
     $questionIDs = mysqli_query($connection, "SELECT * FROM quiz JOIN hasQuestions ON quiz.qid = hasQuestions.Quizid WHERE qid = '".$qid['qid']."'");
 
     //Setter opp et array for de rette svarene
-    $corrAns = array();
+    //$corrAns = array();
+    $corrans = $_SESSION['corrAns'];
     $questionNumber = 1;
 
 
@@ -74,8 +79,12 @@ function popQuiz($connection, $currQuiz)
 
 //Populater questionlisten ved et spacedrep quiz. currPri sier hvilken prioritet som gjelder, numRows sier hvor mange av hver type spørsmål vi skal forsøke å hente ut.
 function questPopper($connection, $userid, $currPri, $numRows, $questionNumber){
+    $corrAns = $_SESSION['corrAns'];
+
+
     //Går gjennom hver kategori
     while ($row = $currPri -> fetch_assoc() and $questionNumber < $numRows) {
+        //return heller corrans også kjører vi questionnumber som sessionvariabel
 
         //Henter spørsmål for hver kategori
         $currQuestion = mysqli_query($connection, "SELECT * FROM questions WHERE qid=".$row['questid'])->fetch_assoc();
@@ -108,9 +117,12 @@ function questPopper($connection, $userid, $currPri, $numRows, $questionNumber){
 
         </li>";
         $questionNumber++;
-        return $questionNumber;
+        
         
     }
+    //Gjør korrekte svar til sessionvariabel
+    $_SESSION['corrAns']     = $corrAns;
+    return $questionNumber;
 }
 
 
@@ -138,8 +150,7 @@ function spacedRepQuiz($connection, $userid)
     $questionNumber = questPopper($connection, $userid, $pri4, 1, $questionNumber);
     $questionNumber = questPopper($connection, $userid, $pri5, 1, $questionNumber);
   
-    //Gjør korrekte svar til sessionvariabel
-    $_SESSION['corrAns']     = $corrAns;
+    
 }
 
 
