@@ -239,19 +239,8 @@ function spacedRepQuiz($connection, $userid)
                             ?>
 
                         </ol>
-                    <a href="<?php
-                    if ($currQuiz != null && $role == "S") {
-                        echo "coursePageStudent.php?id=$classname";
-                    }elseif ($currQuiz != null && $role == "T") {
-                        echo "coursePageTeacher.php?id=$classname";
-                    }elseif ($role == "S"){
-                        echo "mainAsStudent.php";
-                    }else{
-                        echo "mainAsTeacher.php";
-                    }
-
-                    ?>"" class="btn btn-link">Back</a>
-                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 40px;" />
+                    <button class='btn btn-default' style='margin-left: 30px;' onclick='goBack()''>Back</button>
+                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 5px;" />
 
             
                     </form>
@@ -297,6 +286,13 @@ function spacedRepQuiz($connection, $userid)
         </a>
     </div>
 
+    <!-- script for tilbakeknappen -->
+    <script>
+    function goBack() {
+        window.history.back();
+    }
+    </script>
+    
     
 
     <!-- jQuery -->
