@@ -2,21 +2,26 @@
 // Start the Session
 session_start ();
 require ('connect.php');
+require ('lib/security.php');
 ini_set('display_errors', 1);
 $_SESSION['connection']=$connection;
 
-function recoverPassword($email){
+function recoverPassword($email,$publicSalt){
 	//$email = $_POST['email'];
 	$query = mysqli_query($_SESSION['connection'], "SELECT * FROM users WHERE email='".$email."'");
 	if(mysqli_num_rows($query) == 1){
 		while ($row = mysqli_fetch_assoc($query)) {
 			$sendUsername = $row['username'];
-			$sendPassword = $row['password'];
+			$salt1=getRandomString();
+			$salt2=getRandomString();
+			$sendPassword=getRandomString();
+			$password=createPassword($publicSalt, $sendUsername, $salt1, $salt2, $sendPassword);
+			updatePassword($password, $salt1, $salt2, $sendUsername,$_SESSION['connection']);
 		}
 		//Email sender
 		$to = $email;
 		$subject = "Password reminder";
-		$txt = "Hello " . $sendUsername . "!\nYour password is: " . $sendPassword;
+		$txt = "Hello " . $sendUsername . "!\nYour new password is: " . $sendPassword ."    it is recommended that you change it as quickly as posible.";
 		$headers = "From: noreply@classmate.com" . "\r\n";
 		mail($to,$subject,$txt,$headers);
 	}else{
@@ -29,34 +34,17 @@ function recoverPassword($email){
 
 //PASSWORD RECOVERY
 if (isset($_POST['email'])) {
-	/*$email = $_POST['email'];
-	$query = mysqli_query($connection, "SELECT * FROM users WHERE email='".$email."'");
-	if(mysqli_num_rows($query) == 1){
-		while ($row = mysqli_fetch_assoc($query)) {
-		    $sendUsername = $row['username'];
-		    $sendPassword = $row['password'];
-		}
-		//Email sender
-		$to = $email;
-		$subject = "Password reminder";
-		$txt = "Hello " . $sendUsername . "!\nYour password is: " . $sendPassword;
-		$headers = "From: noreply@classmate.com" . "\r\n";
-		mail($to,$subject,$txt,$headers);
-	}
-	else{
-		// do something
-		if (!mysqli_query($connection,"SELECT * FROM users WHERE email='".$email."'")){
-		    die('Error: ' . mysqli_error($connection));
-		}
-	}*/
-	recoverPassword($_POST['email']);
+	recoverPassword($_POST['email'],$publicSalt);
 }
 
 
 // 3. If the form is submitted or not.
 // 3.1 If the form is submitted
 if (isset ( $_POST ['username'] ) and isset ( $_POST ['password'] )) {
-	$fmsg=login($_POST['username'], $_POST['password']);
+	$salt1=getSalt1($_SESSION['connection'], $_POST['username']);
+	$salt2=getSalt2($_SESSION['connection'], $_POST['username']);
+	$password=createPassword($publicSalt, $_POST['username'], $salt1, $salt2, $_POST['password']);
+	$fmsg=login($_POST['username'], $password);
 }
 function login($usrname,$pswrd){
 	$username = $usrname;
