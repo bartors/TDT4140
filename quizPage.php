@@ -80,10 +80,11 @@ function popQuiz($connection, $currQuiz)
 //Populater questionlisten ved et spacedrep quiz. currPri sier hvilken prioritet som gjelder, numRows sier hvor mange av hver type spørsmål vi skal forsøke å hente ut.
 function questPopper($connection, $userid, $currPri, $numRows, $questionNumber){
     $corrAns = $_SESSION['corrAns'];
+    $questCounter = 0;
 
 
     //Går gjennom hver kategori
-    while ($row = $currPri -> fetch_assoc() and $questionNumber < $numRows) {
+    while ($row = $currPri -> fetch_assoc() and $questCounter < $numRows) {
         //return heller corrans også kjører vi questionnumber som sessionvariabel
 
         //Henter spørsmål for hver kategori
@@ -116,6 +117,7 @@ function questPopper($connection, $userid, $currPri, $numRows, $questionNumber){
         </div>
 
         </li>";
+        $questCounter++;
         $questionNumber++;
         
         
