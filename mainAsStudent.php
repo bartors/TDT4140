@@ -114,7 +114,7 @@ if(isset($_POST['delete'])){
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username;?></a>
+					<li class="#page-scroll"><a href="changePassword.php"><?php echo"Logged in as: ".$username;?></a>
 					
 					<li>
                         <?php echo"<a href='logout.php'>Log out</a>"?>
