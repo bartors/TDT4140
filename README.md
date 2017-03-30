@@ -7,3 +7,5 @@ It occurs there is a problem with creating unique key on MariaDB because of the 
 
 2:SECURITY:
 Our security system uses a public salt that is stored in PHP, and two random generated private salts which are stored in database. We use aswell a username as forth salt. Given that the project is open source and the method of hasing pasword, and connecting the various parts of a password are open to public and easy accesible any user that wants to deploy its own ClassMate service should change the public salt and change the way a password is made.  
+
+We will aswell recommend obtaining a SSL certificate and using a secure connection (HTTPS).
