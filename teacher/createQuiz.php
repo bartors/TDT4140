@@ -205,7 +205,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 				</button>
 				<ul class="nav navbar-nav">
 					<a class="navbar-brand" href="mainAsTeacher.php"><img
-						src="img/classmateCleanLogo.svg" width="100%"
+						src="../img/classmateCleanLogo.svg" width="100%"
 						style="vertical-align: top;"></a>
 					</li>
 			

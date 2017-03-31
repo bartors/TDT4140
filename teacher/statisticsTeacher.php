@@ -164,7 +164,7 @@ $count=mysqli_num_rows($quizes);
                             	}*/
 								teacherStatistics($connection, $quizName);
                             ?>
-                            <button class='btn btn-default' onclick='goBack()'><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Back</button>
+                            </br><button class='btn btn-default' onclick='goBack()'><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Back</button>
 
                         </div>
                 </div>
