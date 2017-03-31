@@ -44,10 +44,10 @@ $count=mysqli_num_rows($quizes);
 <title>ClassMate</title>
 
 <!-- Bootstrap Core CSS -->
-<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Theme CSS -->
-<link href="css/freelancer.css" rel="stylesheet">
+<link href="../css/freelancer.css" rel="stylesheet">
 
 <!-- Custom Fonts -->
 <link href="vendor/font-awesome/css/font-awesome.min.css"
@@ -81,7 +81,7 @@ $count=mysqli_num_rows($quizes);
 				</button>
 				<ul class="nav navbar-nav">
 					<a class="navbar-brand" href="../index.php"><img
-						src="img/classmateCleanLogo.svg" width="100%"
+						src="../img/classmateCleanLogo.svg" width="100%"
 						style="vertical-align: top;"></a>
 					</li>
 			
@@ -95,7 +95,7 @@ $count=mysqli_num_rows($quizes);
 					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username;?></a>
 					
 					<li>
-                        <?php echo"<a href='../commmon/logout.php'>Log out</a>"?>
+                        <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
 				</ul>
 			</div>
@@ -115,7 +115,7 @@ $count=mysqli_num_rows($quizes);
             </br>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="panel panel-default" style="width:100%;">
+                    <div class="panel panel-default" style="width:200%;">
                         <div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  <?php echo $quizName." - Statistics"; ?></div>
                         <div class="panel-body">
                             <?php
@@ -164,17 +164,10 @@ $count=mysqli_num_rows($quizes);
                             	}*/
 								teacherStatistics($connection, $quizName);
                             ?>
+                            <button class='btn btn-default' onclick='goBack()'><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Back</button>
+
                         </div>
                 </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  Options</div>
-                        <div class="panel-body">
-                            <a href="#">Push this quiz to students</a></br>
-                            <a href="createQuiz.php">Create new quiz</a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -218,7 +211,13 @@ $count=mysqli_num_rows($quizes);
 			</a>
 		</div>
 
-	
+        <script>
+        function goBack() {
+            window.history.back();
+        }
+        </script>
+
+
 		<!-- jQuery -->
 		<script src="../vendor/jquery/jquery.min.js"></script>
 
