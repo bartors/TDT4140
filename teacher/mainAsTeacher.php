@@ -103,10 +103,10 @@ if(isset($_POST['delete'])){
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username;?></a>
+					<li class="#page-scroll"><a href="../common/changePassword.php"><?php echo"Logged in as: ".$username;?></a>
 					
 					<li>
-                        <?php echo"<a href='../logout.php'>Log out</a>"?>
+                        <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
 				</ul>
 			</div>
@@ -127,7 +127,7 @@ if(isset($_POST['delete'])){
 			<div class="row"></div>
 			<div class="col-md-4">
 				<div class="panel panel-default" style="width: 100%;">
-					<div class="panel-heading">Courses</div>
+					<div class="panel-heading"><span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>  Courses</div>
 					<div class="panel-body" style="line-height: 22px;">
 						<?php 
 						if ($count > 0) {
@@ -150,7 +150,7 @@ if(isset($_POST['delete'])){
 			<div class="col-md-4">
 				<div class="panel panel-default"
 					style="width: 100%; vertical-align: middle;">
-					<div class="panel-heading">Create new course</div>
+					<div class="panel-heading"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  Create new course</div>
 					<form class="form-signin" method="POST">
 					<div class="panel-body">
 						<input class="addCourseInput" type="text" name="classname"
@@ -199,8 +199,7 @@ if(isset($_POST['delete'])){
 			</a>
 		</div>
 
-
-		</div>
+		
 
 		<!-- jQuery -->
 		<script src="../vendor/jquery/jquery.min.js"></script>

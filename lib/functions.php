@@ -63,4 +63,8 @@ function showQuiz($connection,$qid){
 		}
 		
 	}
+	
+	function displayQuizName($quizName){
+		echo "<h2>".$quizName."</h2>";
+	}
 ?>

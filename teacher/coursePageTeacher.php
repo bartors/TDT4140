@@ -62,7 +62,7 @@ function displayQuizes($count,$quizes){
 	if ($count > 0) {
 		while ( $row = mysqli_fetch_array ( $quizes ) ) {
 			echo "<form class='form-signin' method='POST'>
-                                <a href='../student/quizPage.php?quiz=" . $row ['name'] . "'>" . $row ['name'] . "</a>
+                                <a href='../common/quizPage.php?quiz=" . $row ['name'] . "'>" . $row ['name'] . "</a>
                                 <button name='delete' class='btn btn-default btn-xs' type='submit' value=" . $row ['qid'] . " style='float: right;'>
                                     <span class='glyphicon glyphicon-trash' aria-hidden='true'></span></button>
                                 <a href='createQuiz.php?id=" . $row ['qid'] . "' class='btn btn-default btn-xs' aria-label='Left Align' style='float: right;'>
@@ -188,7 +188,7 @@ if (isset ( $_POST ['activStat'] )) {
 					<li class="#page-scroll"><a href="#"><?php echo"Logged in as: ".$username?></a>
 					
 					<li>
-                        <?php echo"<a href='../logout.php'>Log out</a>"?>
+                        <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
 				</ul>
 			</div>
@@ -209,7 +209,7 @@ if (isset ( $_POST ['activStat'] )) {
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Create quizzes</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>  Create quizzes</div>
 						<form class="form-signin" method="POST">
 							<div class="panel-body">
 								<input class="addCourseInput" type="text" name="quizName"
@@ -221,7 +221,7 @@ if (isset ( $_POST ['activStat'] )) {
 				</div>
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Course quizzes</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>  Course quizzes</div>
 						<div class="panel-body" style="line-height: 22px;">
                     <?php displayQuizes($count, $quizes);?>
                     </div>
@@ -231,7 +231,7 @@ if (isset ( $_POST ['activStat'] )) {
 
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Statistics</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  Statistics</div>
 						<div class="panel-body" style="line-height: 22px;">
 
                     <?php 
@@ -280,7 +280,7 @@ if (isset ( $_POST ['activStat'] )) {
 			</a>
 		</div>
 
-	
+		
 
 		<!-- jQuery -->
 		<script src="../vendor/jquery/jquery.min.js"></script>

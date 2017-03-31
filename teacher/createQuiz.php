@@ -2,6 +2,7 @@
 
 session_start();
 require '../connect.php';
+require '../lib/functions.php';
 //setter lokale variabler utifraa session's variabler
 $username=$_SESSION['username'];
 $password=$_SESSION['password'];
@@ -9,9 +10,9 @@ $role=$_SESSION['role'];
 $userid=$_SESSION['userid'];
 $classname=$_SESSION['classname'];
 //skriver ut navnet op quizen
-function displayQuizName($quizName){
+/*function displayQuizName($quizName){
 	echo "<h2>".$quizName."</h2>";
-}
+}*/
 //finner spørsmål
 function showQuestions($connection,$classname){
 	$query = "SELECT question FROM questions WHERE classid=(SELECT classid from class where classname='$classname')";
@@ -204,7 +205,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 				</button>
 				<ul class="nav navbar-nav">
 					<a class="navbar-brand" href="mainAsTeacher.php"><img
-						src="../img/classmateCleanLogo.svg" width="100%"
+						src="img/classmateCleanLogo.svg" width="100%"
 						style="vertical-align: top;"></a>
 					</li>
 			
@@ -240,7 +241,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 			<div class="row">
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading"><?php   echo $quizName;?> - Added questions</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>  <?php   echo $quizName;?> - Added questions</div>
 						<form class="form-signin" method="POST">
 							<div class="panel-body" style="line-height: 22px;">
 							<?php
@@ -276,7 +277,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 				</div>
 				<div class="col-md-4">
 					<div class="panel panel-default" style="width: 100%;">
-						<div class="panel-heading">Choose a topic to find questions</div>
+						<div class="panel-heading"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>  Choose a topic to find questions</div>
 						<div class="panel-body">
 							<!--GET TOPICS-->
 		                    <?php
@@ -294,10 +295,10 @@ function displayQuestionsInQuiz($connection,$quizName){
 					<div class="panel panel-default" style="width: 100%;">
 						<div class="panel-heading"><?php 
 						if ($topic == '') {
-							echo "Topic: All</div>";
+							echo "<span class='glyphicon glyphicon-question-sign' aria-hidden='true'></span>  Questions in topic: All</div>";
 						}
 						else {
-							echo "Topic: ".$topic."</div>";
+							echo "<span class='glyphicon glyphicon-question-sign' aria-hidden='true'></span>  Questions in topic: ".$topic."</div>";
 						}
 
 						?>
@@ -418,7 +419,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 		<script src="../js/contact_me.js"></script>
 
 		<!-- Theme JavaScript -->
-		<script src="js/freelancer.min.js"></script>
+		<script src="../js/freelancer.min.js"></script>
 
 </body>
 
