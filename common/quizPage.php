@@ -230,7 +230,7 @@ function spacedRepQuiz($connection, $userid)
             <div class="row ">
                 <div class="col-lg-12">
                         <h2><?php echo $currQuiz;?></h2></br>
-                    <form action="../common/grade.php" method="post" id="quiz">
+                    <form class="quizPageForm" action="../common/grade.php" method="post" id="quiz">
                         <ol>
                             <?php
                                 if ($qid == "Spaced-repetion") {
@@ -241,11 +241,11 @@ function spacedRepQuiz($connection, $userid)
                             ?>
 
                         </ol>
-                    <button class='btn btn-default' style='margin-left: 30px;' onclick='goBack()''>Back</button>
-                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 5px;" />
+                    <input class="btn btn-default" type="submit" value="Submit Quiz" style="margin-left: 30px;" />
 
             
                     </form>
+                    <button class='btn btn-default' style='margin-left: 5px;' onclick='goBack()''>Back</button>
                 </div>
             </div>
         </div>
