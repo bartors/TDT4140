@@ -141,7 +141,7 @@ function studentStatistics($connection,$quizName,$userid){
 			</br>
 			            <div class="row">
                 <div class="col-md-4">
-                    <div class="panel panel-default" style="width:100%;">
+                    <div class="panel panel-default" style="width:200%;">
                         <div class="panel-heading"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  <?php echo $quizName." - Statistics" ?></div>
                         <div class="panel-body">
                             <?php
@@ -174,16 +174,11 @@ function studentStatistics($connection,$quizName,$userid){
 */
 studentStatistics($connection, $quizName,$_SESSION['userid']);
                             ?>
+                            </br>
+                            <button class='btn btn-default' onclick='goBack()'><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Back</button>
+
                         </div>
                 </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default" style="width:100%;">
-                        <div class="panel-heading"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>  Options</div>
-                        <div class="panel-body">
-                            <?php echo "<a href='../common/quizPage.php?quiz=".$quizName."'>Do this quiz again</a>";?>
-                        </div>
-                    </div>
                 </div>
             </div>
 		</div>
@@ -225,7 +220,11 @@ studentStatistics($connection, $quizName,$_SESSION['userid']);
 			</a>
 		</div>
 
-		
+		<script>
+    	function goBack() {
+        	window.history.back();
+    	}
+    	</script>
 
 		<!-- jQuery -->
 		<script src="../vendor/jquery/jquery.min.js"></script>
