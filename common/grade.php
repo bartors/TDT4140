@@ -190,8 +190,14 @@ function priorityChange($connection, $isCorrect, $userid, $lastQuiz, $corrAns, $
                             popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQuiz);
                         ?>
                     </ol>
-                    <a href="../student/mainAsStudent.php" class="btn btn-default" style="margin-left: 40px;"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>  Home</a>
-                
+                    <?php
+                    if ($role == 'S') { ?>
+                        <a href="../student/mainAsStudent.php" class="btn btn-default" style="margin-left: 40px;"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>  Home</a>
+                    <?php
+                    }
+                    else { ?>
+                        <a href="../teacher/mainAsTeacher.php" class="btn btn-default" style="margin-left: 40px;"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>  Home</a>
+                    <?php } ?>
                 </div>
                 
             <script type="text/javascript">
