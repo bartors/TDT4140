@@ -61,6 +61,13 @@ function showQuiz($connection,$qid){
 		}
 		else {
 		}
+		$thisQuizId = $_GET['quizId'];
+		$totalStudents = mysqli_query($connection, "SELECT DISTINCT userid FROM hasAnsweredQuestion WHERE qid='".$thisQuizId."'");
+		$numberOfStudentsAnswer = 0;
+		while ($totalStudentsRow = $totalStudents->fetch_assoc()){
+			$numberOfStudentsAnswer++;
+		}
+		echo "</br>".$numberOfStudentsAnswer." students have answered this quiz.";
 		
 	}
 	
