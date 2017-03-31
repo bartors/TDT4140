@@ -19,13 +19,19 @@ $count = mysqli_num_rows ( $classes );
 //lager ny klasse
 function makeClass($connection,$userid,$classname){
 	$makeClass = "INSERT INTO class(classname, creator) values('$classname','$userid')";
-	$result = mysqli_query ( $connection, $makeClass ) or die ( mysqli_error ( $connection ) );
+	return mysqli_query ( $connection, $makeClass );
 	mysqli_close();
 }
 if (isset ( $_POST ['classname'] )) {
-	makeClass($connection, $_SESSION ['userid'], $_POST ['classname']);
-	unset ( $_POST ['classname'] );
-	header ( 'Location:mainAsTeacher.php' );
+	$check = makeClass($connection, $_SESSION ['userid'], $_POST ['classname']);
+	if ($check) {
+		unset ( $_POST ['classname'] );
+		header ( 'Location:mainAsTeacher.php' );
+	}
+	else {
+		unset ( $_POST ['classname'] );
+		$fmsg = "Course already existing.";
+	}
 }
 //deaktiverer et fag
 function deactivateClass($connection,$classID){
@@ -156,6 +162,7 @@ if(isset($_POST['delete'])){
 						<input class="addCourseInput" type="text" name="classname"
 							placeholder="Course name">&nbsp
 						<button class="btn btn-default" type="submit">Create course</button>
+						<?php if(isset($fmsg)){ ?><div class="alert alert-danger" role="alert"> <?php echo $fmsg; ?> </div><?php }?>
 					</div></form>
 				</div>
 			</div>
