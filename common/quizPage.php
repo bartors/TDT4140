@@ -245,7 +245,7 @@ function spacedRepQuiz($connection, $userid)
 
             
                     </form>
-                    <button class='btn btn-default' style='margin-left: 5px;' onclick='goBack()''>Back</button>
+                    <button class='btn btn-default' style='margin-left: 5px;' onclick='goBack()'><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Back</button>
                 </div>
             </div>
         </div>
