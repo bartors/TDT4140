@@ -29,6 +29,7 @@ html {
 body {
 	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	overflow-x: hidden;
+	background-color: #f5f5f5;
 }
 
 p {
@@ -40,8 +41,9 @@ p.small {
 }
 
 a, a:hover, a:focus, a:active, a.active {
-	color: #18BC9C;
+	color: #575A5E;
 	outline: none;
+	font-weight: bold;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -136,7 +138,7 @@ header .intro-text .skills {
 }
 
 .navbar-custom {
-	background: #12B24B;
+	background: #000319;
 	font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial,
 		sans-serif;
 	text-transform: uppercase;
@@ -173,7 +175,7 @@ header .intro-text .skills {
 }
 
 .navbar-custom .navbar-nav li a:hover {
-	color: #18BC9C;
+	color: #02010A;
 	outline: none;
 }
 
@@ -388,7 +390,7 @@ footer .footer-col {
 
 footer .footer-below {
 	padding: 25px 0;
-	background-color: #12B24B;
+	background-color: #000319;
 }
 
 .btn-outline {

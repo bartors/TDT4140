@@ -63,13 +63,13 @@ makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'
     <title>ClassMate</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="../css/freelancer.css" rel="stylesheet">
+    <link href="css/freelancer.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
@@ -93,7 +93,7 @@ makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
                 <ul class="nav navbar-nav">
-                <a class="navbar-brand" href="../index.php"><img src="img/classmateCleanLogo.svg" width="100%" style="vertical-align: top;"></a>
+                <a class="navbar-brand" href="../index.php"><img src="../img/classmateCleanLogo.svg" width="100%" style="vertical-align: top;"></a>
                 </li>
             </div>
 
@@ -106,7 +106,7 @@ makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'
                     <li class="#page-scroll">
                         <a href="#"><?php echo"Logged in as: ".$username;?></a>
                     <li>
-                        <?php echo"<a href='../logout.php'>Log out</a>"?>
+                        <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
                 </ul>
             </div>
@@ -231,6 +231,7 @@ makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'
         </a>
     </div>
 
+   
     <!-- jQuery -->
     <script src="../vendor/jquery/jquery.min.js"></script>
 
