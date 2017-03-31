@@ -190,6 +190,7 @@ function priorityChange($connection, $isCorrect, $userid, $lastQuiz, $corrAns, $
                             popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQuiz);
                         ?>
                     </ol>
+                    <a href="../student/mainAsStudent.php" class="btn btn-default" style="margin-left: 40px;"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>  Home</a>
                 
                 </div>
                 
