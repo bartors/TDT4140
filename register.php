@@ -45,7 +45,7 @@ if (isset ( $_POST ['username'] ) && isset ( $_POST ['password'] )) {
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <!-- Optional theme -->
-<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="css/index.css">
 
 <!-- Latest compiled and minified JavaScript -->
 <script
