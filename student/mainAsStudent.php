@@ -8,28 +8,24 @@ $role = $_SESSION ['role'];
 $userid = $_SESSION ['userid'];
 // setter opp query for å hente info om brukeren
 //$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
-//skriver ut error
-function error($string) {
-	if ($string == "Column 'classid' cannot be null") {
-		print 'Denne klassen er ikke i vår database, har du stavet riktig?';
-	} else {
-		print 'Noe gikk feil. Være så snill, kontakt våre utviklere.';
-	}
-	echo "<p><a href='mainAsStudent.php'>Tilbake til hovedsiden</a>";
-	exit ();
-}
 //legger til en klasse for studenten
 function attends($connection,$classname,$userid){
 	$classname = $_POST ['classname'];
-	$query = "INSERT INTO attends(userid,classid) values('$userid',(SELECT classid FROM class WHERE classname='$classname'))";
+	$query = "INSERT INTO attends(userid,classid) values ('$userid',(SELECT classid FROM class WHERE classname='$classname'))";
 	// utører sqloperasjonen eller skriver ut en feilmelding
-	$result = mysqli_query ( $connection, $query ) or error ( mysqli_error ( $connection ) );
-	mysqli_close();
+	return mysqli_query ( $connection, $query );
 }
+//skriver ut evt feilmelding
 if (isset ( $_POST ['classname'] )) {
-	attends($connection, $_POST['classname'], $_SESSION['userid']);
-	unset ( $_POST ['classname'] );
-	header ( 'Location:mainAsStudent.php' );
+	$check = attends($connection, $_POST['classname'], $_SESSION['userid']);
+	if ($check) {
+		unset($fmsg);
+		header ( 'Location:mainAsStudent.php' );
+	}
+	else {
+		unset ( $_POST ['classname'] );
+		$fmsg = "Course not existing or already added";
+	}
 }
 //Skriver ut klasser du er i
 function showClassesStudent($connection,$userid){
@@ -150,6 +146,7 @@ if(isset($_POST['delete'])){
 								echo "You have no classes yet.</br>";
 						}?></br>
 						<form class='form-signin' method='POST'>
+						<?php if(isset($fmsg)){ ?><div class="alert alert-danger" role="alert"> <?php echo $fmsg; ?> </div><?php }?>
 								<input class="addCourseInput" type="text" name="classname"
 									placeholder="Course name">&nbsp
 								<button class="btn btn-default" type="submit"
