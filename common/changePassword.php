@@ -6,6 +6,10 @@ if(isset($_POST['newPass1'])){
 	$fmgs=changePass($_POST['newPass1'], $_POST['newPass2'], $_POST['oldPass'], $publicSalt, $_SESSION['username'], $connection);
 }
 
+if(isset($_POST['newEmail'])){
+	changeEmail($connection, $_POST['newEmail'], $_POST['pass'], $_SESSION['username'], $publicSalt);
+}
+
 
 ?>
 
@@ -29,6 +33,18 @@ if(isset($fmgs)){echo $fmgs;}?>
 				<span class="input-group-addon" id="basic-addon1">@</span> <input
 				type="text" name="oldPass" class="form-control"
 				placeholder="Old password" required>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+		</div>
+	</form>
+	<form class="form-signin" method="POST">
+		<div class="input-group">
+			<span class="input-group-addon" id="basic-addon1">@</span> <input
+				type="text" name="newEmail" class="form-control"
+				placeholder="New email" required>
+				<span class="input-group-addon" id="basic-addon1">@</span> <input
+				type="text" name="pass" class="form-control"
+				placeholder="Enter your password" required>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 
 		</div>

@@ -55,4 +55,14 @@ $publicSalt = 'cluFlA6+i1zi_sI_';
  		return "The new passwords has to mach.";
  	}
  }
+ 
+ function changeEmail($connection,$email,$password,$username,$publicSalt){
+ 	$salt1=getSalt1($connection, $username);
+ 	$salt2=getSalt2($connection, $username);
+ 	$password=createPassword($publicSalt, $username, $salt1, $salt2, $password);
+ 	$updateEmail="UPDATE users set email='$email' where password='$password' ";
+ 	$result=mysqli_query($connection, $updateEmail) or die( mysqli_error ( $connection ) );
+ 
+ 
+ }
 ?>
