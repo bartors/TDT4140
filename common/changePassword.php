@@ -7,7 +7,7 @@ if(isset($_POST['newPass1'])){
 }
 
 if(isset($_POST['newEmail'])){
-	changeEmail($connection, $_POST['newEmail'], $_POST['pass'], $_SESSION['username'], $publicSalt);
+	$fmgs=changeEmail($connection, $_POST['newEmail'], $_POST['pass'], $_SESSION['username'], $publicSalt);
 }
 
 
