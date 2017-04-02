@@ -38,7 +38,6 @@ $publicSalt = 'cluFlA6+i1zi_sI_';
  		$salt2=getSalt2($connection, $username);
  		$password=createPassword($publicSalt, $username, $salt1, $salt2, $oldPass);
  		$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
- 	
  		$result = mysqli_query ( $connection, $query ) or die ( mysqli_error ($connection ) );
  		$row=mysqli_fetch_assoc($result);
  		if($row['username']==$username){
@@ -54,5 +53,23 @@ $publicSalt = 'cluFlA6+i1zi_sI_';
  	}else{
  		return "The new passwords has to mach.";
  	}
+ }
+ 
+ function changeEmail($connection,$email,$password,$username,$publicSalt){
+ 	$salt1=getSalt1($connection, $username);
+ 	$salt2=getSalt2($connection, $username);
+ 	$password=createPassword($publicSalt, $username, $salt1, $salt2, $password);
+ 	$query = "SELECT * FROM `users` WHERE username='$username' and password='$password'";
+ 	$result = mysqli_query ( $connection, $query ) or die ( mysqli_error ($connection ) );
+ 	$row=mysqli_fetch_assoc($result);
+ 	if($row['username']==$username){
+ 	$updateEmail="UPDATE users set email='$email' where password='$password' ";
+ 	$result=mysqli_query($connection, $updateEmail) or die( mysqli_error ( $connection ) );
+ 	return "You have new email.";
+ 	}else{
+ 		return "Wrong password.";
+ 	}
+ 
+ 
  }
 ?>
