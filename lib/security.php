@@ -45,13 +45,13 @@ $publicSalt = 'cluFlA6+i1zi_sI_';
  			$salt2=getRandomString();
  			$password=createPassword($publicSalt, $username, $salt1, $salt2, $newPass1);
  			updatePassword($password, $salt1, $salt2, $username,$connection);
- 			return "You have new password.";
+ 			return "Password succesfully changed.";
  		}else{
  			return "Wrong password.";
  			}
  	
  	}else{
- 		return "The new passwords has to mach.";
+ 		return "The new passwords has to match.";
  	}
  }
  
@@ -65,7 +65,7 @@ $publicSalt = 'cluFlA6+i1zi_sI_';
  	if($row['username']==$username){
  	$updateEmail="UPDATE users set email='$email' where password='$password' ";
  	$result=mysqli_query($connection, $updateEmail) or die( mysqli_error ( $connection ) );
- 	return "You have new email.";
+ 	return "Email succesfully changed.";
  	}else{
  		return "Wrong password.";
  	}
