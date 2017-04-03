@@ -166,7 +166,7 @@ function priorityChange($connection, $isCorrect, $userid, $lastQuiz, $corrAns, $
                         <a href="#page-top"></a>
                     </li>
                     <li class="#page-scroll">
-                        <a href="#"><?php echo $username." - My profile";?></a>
+                        <a href="#"><?php echo"Logged in as: ".$username;?></a>
                     <li>
                         <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
@@ -238,7 +238,7 @@ function priorityChange($connection, $isCorrect, $userid, $lastQuiz, $corrAns, $
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        Copyright &copy; ClassMate 2017
+                        Copyright &copy; Your Website 2016
                     </div>
                 </div>
             </div>
