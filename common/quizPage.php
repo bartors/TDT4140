@@ -213,7 +213,7 @@ function spacedRepQuiz($connection, $userid)
                         <a href="#page-top"></a>
                     </li>
                     <li class="#page-scroll">
-                        <a href="#"><?php echo"Logged in as: ".$username;?></a>
+                        <a href="#"><?php echo $username." - My profile";?></a>
                     <li>
                         <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
@@ -274,7 +274,7 @@ function spacedRepQuiz($connection, $userid)
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        Copyright &copy; Your Website 2016
+                        Copyright &copy; ClassMate 2017
                     </div>
                 </div>
             </div>
