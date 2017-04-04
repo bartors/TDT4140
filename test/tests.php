@@ -2,7 +2,7 @@
 session_start ();
 require '../connect.php';
 require "phpunit-6.0.10.phar";
-require '../lib/functions.php';
+require 'Allfunctions.php';
 
 
 
