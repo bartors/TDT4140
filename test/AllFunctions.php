@@ -11,13 +11,7 @@ function showQuiz($connection,$qid){
 	return $quizName;
 	//}
 }
-//viser quizer
-function showQuizes($connection, $classname) {
-		$showQuizes = "SELECT qid,name,active from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
-		$quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $connection ) );
-		mysqli_close ();
-		return $quizes;
-}
+
 //viser statistikk for lærer
 function teacherStatistics($connection,$quizName){
 	$qid = mysqli_query($connection, "SELECT qid FROM quiz WHERE name='".$quizName."'")->fetch_assoc();
