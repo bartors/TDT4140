@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require '../connect.php';
-require "phpunit-6.0.10.phar";
+//require "phpunit-6.0.10.phar";
 require 'Allfunctions.php';
 
 
