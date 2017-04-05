@@ -110,7 +110,7 @@ if(isset($_POST['delete'])){
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li class="hidden"><a href="#page-top"></a></li>
-					<li class="#page-scroll"><a href="../common/changePassword.php"><?php echo"Logged in as: ".$username;?></a>
+					<li class="#page-scroll"><a href="../common/changePassword.php"><?php echo "Profile: ".$username;?></a>
 					
 					<li>
                         <?php echo"<a href='../common/logout.php'>Log out</a>"?>
@@ -233,7 +233,7 @@ if(isset($_POST['delete'])){
 			<div class="footer-below">
 				<div class="container">
 					<div class="row">
-						<div class="col-lg-12">Copyright &copy; Your Website 2016</div>
+						<div class="col-lg-12">Copyright &copy; ClassMate 2017</div>
 					</div>
 				</div>
 			</div>
