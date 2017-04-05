@@ -104,7 +104,7 @@ makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'
                         <a href="#page-top"></a>
                     </li>
                     <li class="#page-scroll">
-                        <a href="#"><?php echo"Logged in as: ".$username;?></a>
+                        <a href="#"><?php echo "Profile: ".$username;?></a>
                     <li>
                         <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
@@ -217,7 +217,7 @@ makeQuestion($connection, $_GET['id'], $_SESSION['classname'], $_POST['question'
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        Copyright &copy; Your Website 2016
+                        Copyright &copy; ClassMate 2017
                     </div>
                 </div>
             </div>
