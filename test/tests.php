@@ -8,15 +8,14 @@ require 'Allfunctions.php';
 
 function makeClassTest($connection, $userid, $className){
 	makeClass($connection, $userid, $className);
-	$showClass = "SELECT * FROM class WHERE classname='$className'";
-	$classes = mysqli_query ( $connection, $showClass ) or die ( mysqli_error ( $connection ) );
+	$showClass = "SELECT classname FROM class WHERE classname='$className'";
 	mysqli_close();
-    $row=mysqli_fetch_array($classes);
-	if($className=$row['classname']){
-    	return true;
+    $result=mysqli_query($connection, $showClass);
+	if($className=$result){
+    	return "true";
 	}
 	else{
-		return false;
+		return "false";
 	}
 
 }
@@ -36,6 +35,7 @@ function makeClassTest($connection, $userid, $className){
 	<body>
 
 	<?php
+		//alltid endre klassenavn for å unngå duplikat
 		echo makeClassTest($connection, '7', 'test1234');
 
 	?>
