@@ -1,17 +1,20 @@
 <?php
 session_start ();
 require '../connect.php';
-//require "phpunit-6.0.10.phar";
-require 'Allfunctions.php';
+//include "phpunit-6.0.10.phar";
+include 'AllFunctions.php';
 
-
+$numberOfSuccess;
+$numberOfFunctions = 32;
 
 function makeClassTest($connection, $userid, $className){
+	global $numberOfSuccess;
 	makeClass($connection, $userid, $className);
 	$showClass = "SELECT classname FROM class WHERE classname='$className'";
 	mysqli_close();
     $result=mysqli_query($connection, $showClass);
 	if($className=$result){
+		$numberOfSuccess++;
     	return "true";
 	}
 	else{
@@ -20,8 +23,20 @@ function makeClassTest($connection, $userid, $className){
 
 }
 
+function test(){
+	global $numberOfSuccess;
+	$newSUm = $numberOfSuccess + 1;
+	$numberOfSuccess = $newSUm;
+}
+$rate = 0;
 
+function testRate($x, $y){
+	global $rate;
+	$rate = $x/$y;
+	$rate = $rate * 100;
+	return $rate;
 
+}
 
 
 ?>
@@ -35,8 +50,11 @@ function makeClassTest($connection, $userid, $className){
 	<body>
 
 	<?php
-		//alltid endre klassenavn for å unngå duplikat
-		echo makeClassTest($connection, '7', 'test1234');
+		
+		echo makeClassTest($connection, '7', 'assad1222');
+		//echo test();
+
+		echo "<p>".testRate($numberOfSuccess, $numberOfFunctions)."%</p>";
 
 	?>
 
