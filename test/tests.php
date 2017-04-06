@@ -106,6 +106,128 @@ function stopAttendingTest($connection,$userid,$classid){
 	return "stopAttendingTest: true</br>";
 }
 
+//tester showclasses
+function showClassesTest($connection, $userid, $classes) {
+	global $numberOfSuccess;
+    $result = showClasses ( $connection, $userid );
+    $i = 0;
+    while ( $row = mysqli_fetch_array ( $result ) ) {
+        if(!($row['classname']===$classes[$i])){
+            return "showClassesTest: false</br>";
+        }
+        $i++;
+    }
+    $numberOfSuccess++;
+    return "showClassesTest: true</br>";
+}
+
+//array for showclasstest
+$classes=array(
+        0=>'myClass',
+        1=>'klasa',
+        2=>'klasa1',
+        3=>'asasa',
+        4=>'dsaasda',
+        5=>'qwert',
+        6=>'asdsadasfew',
+        7=>'mama',
+        8=>'Tata',
+        9=>'klasa10',
+        10=>'klasa11',
+        11=>'klasa12',
+        12=>'klasa13',
+        13=>'klasa14',
+        14=>'testquiz',
+        15=>'userTest'  
+);
+
+function ShowQuizTest($connection, $qid, $quizname){
+	global $numberOfSuccess;
+	$resultName = showQuiz($connection, $qid);
+	if ($resultName === $quizname){
+		$numberOfSuccess++;
+    	return "showQuizTest: true</br>";
+	}
+	else{
+		return"showQuizTest: false</br>";
+	}
+}
+
+//test som viser aktive quizer
+//skriver quizer som linker. Bruker funksjonaliteten her til å lage en liste vi kan teste opp mot
+function displayActiveQuizesTest($connection, $classname, $quizArray){
+	global $numberOfSuccess; 
+	$activeQuizes = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
+	$i = 0;
+	while ($row = $activeQuizes->fetch_assoc()){
+		if(!($row['name']===$quizArray[$i])){
+            return "showActiveQuizesTest: false</br>";
+        }
+    	$i++;
+    }
+    $numberOfSuccess++;
+    return "showActiveQuizesTest: true</br>";
+}
+
+//array for showActiveQuizesTest
+$quizArray=array(
+        0=>'testquiz',
+        1=>'testquiz4',
+        2=>'testquiz2'
+);
+
+//displayQuizname test. Endrer logikken litt så vi får kjørt test på denne da den bare skriver ut <h2>'er
+function modifiedDisplayQuizName($quizname){
+	return $quizname;
+}
+
+function displayQuizNameTest($quizname){
+	global $numberOfSuccess;
+	$name = modifiedDisplayQuizName($quizname);
+	if($name === $quizname){
+		$numberOfSuccess++;
+    	return "displayQuizNameTest: true</br>";
+	}
+	else{
+		return "displayQuizNameTest: false</br>";
+	}
+}
+
+//test for hvilke klasser studenten er med i
+function showClassesStudentTest($connection, $userid, $studentClassArray){
+	global $numberOfSuccess;
+	$classes = showClassesStudent($connection, $userid);
+	$i = 0;
+    while ( $row = mysqli_fetch_array ( $classes ) ) {
+        if(!($row['classname']===$studentClassArray[$i])){
+            return "showClassesStudentTest: false</br>";
+        }
+        $i++;
+    }
+    $numberOfSuccess++;
+    return "showClassesStudentTest: true</br>";
+}
+
+//liste for test av studentklasser
+$studentClassArray=array(
+        0=>'myClass',
+        1=>'klasa',
+        2=>'userTest'
+);
+
+//test for displayClassNAme, endrer logikk for å teste funksjonalitet da den skriver ut navn som <h2>.
+function displayClassnameTest($className){
+	global $numberOfSuccess;
+	$_SESSION['classname']=$className;
+	$value = $_SESSION['classname'];
+	if($className === $value){
+		$numberOfSuccess++;
+    	return "displayClassnameTest: true</br>";
+	}
+	else{
+		return "displayClassnameTest: false</br>";
+	}
+}
 
 //tester for coverage
 function test(){
@@ -113,6 +235,7 @@ function test(){
 	$newSUm = $numberOfSuccess + 1;
 	$numberOfSuccess = $newSUm;
 }
+
 $rate = 0;
 
 function testRate($x, $y){
@@ -141,7 +264,12 @@ function testRate($x, $y){
 		echo registerUserTestEmail($connection, 'testbruker02', 'testemail02', 'testpassord02');
 		echo attendsTest($connection, 'testclass01', '95');
 		echo stopAttendingTest($connection, '95', '138');
-
+		echo showClassesTest($connection,'6',$classes);
+		echo ShowQuizTest($connection, '1', 'testquiz');
+		echo displayActiveQuizesTest($connection, 'myClass', $quizArray);
+		echo displayQuiznameTest('testName');
+		echo showClassesStudentTest($connection, '2', $studentClassArray);
+		echo displayClassnameTest('myClass');
 
 		//echo test();
 
