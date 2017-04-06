@@ -371,6 +371,9 @@ function displayStatistics($connection,$classname){
         }
     }   
 }
+
+
+//tested
 //skriver ut klassevanvet
 function displayClassname(){
     Echo'<h2>Teacher - '. $_SESSION['classname'].'</h2>';
