@@ -1,10 +1,10 @@
 <?php
+//tested
 //viser quiz
 function showQuiz($connection,$qid){
     $showQuizName="select name from quiz where qid='$qid'";
     $result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
     $count= mysqli_num_rows ( $result );
-    mysqli_close();
     //if($count==1){
     $row = mysqli_fetch_array ( $result );
     $quizName=$row['name'];
@@ -63,11 +63,15 @@ function teacherStatistics($connection,$quizName){
     }
     echo "</br>".$numberOfStudentsAnswer." students have answered this quiz.";  
 }
+
+//tested
 //viser quiznavn
     function displayQuizName($quizName){
         echo "<h2>".$quizName."</h2>";
-    }
-//registrere bruker
+}
+
+//tested
+//registrere bruker 
 function registerUser($connection, $username, $email, $password, $teacher,$salt1,$salt2) {
     // trenger en logikk som skjekker om variablene ikke overskirder en lengde på 255
     if ($teacher) {
@@ -77,6 +81,7 @@ function registerUser($connection, $username, $email, $password, $teacher,$salt1
     }
     return mysqli_query ( $connection, $query );
 }
+
 //funksjon for å sjekke resultat
 function popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQuiz)
 {
@@ -267,6 +272,8 @@ function spacedRepQuiz($connection, $userid)
   
     
 }
+
+//tested
 //Viser aktive quizer
 function displayActiveQuizes($connection,$classname){
     $sql = mysqli_query($connection, "SELECT name FROM quiz WHERE (classid=(SELECT classid from class where classname='$classname') AND active=1) ORDER BY activDate DESC");
@@ -274,19 +281,24 @@ function displayActiveQuizes($connection,$classname){
         echo "<a href='../common/quizPage.php?quiz=".$row['name']."'>".$row ['name'] ."</a></br>";
     }
 }
+
+//tested
 //legger til student i fag
 function attends($connection,$classname,$userid){
     $query = "INSERT INTO attends(userid,classid) values ('$userid',(SELECT classid FROM class WHERE classname='$classname'))";
     // utører sqloperasjonen eller skriver ut en feilmelding
     return mysqli_query ( $connection, $query );
 }
+
+//tested
 //Skriver ut klasser studenten er med i
 function showClassesStudent($connection,$userid){
-$showClasses = "SELECT classname, class.classid from class join attends on class.classid=attends.classid where attends.userid='$userid'";
-$classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
-mysqli_close();
-return $classes;
+    $showClasses = "SELECT classname, class.classid from class join attends on class.classid=attends.classid where attends.userid='$userid'";
+    $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
+    return $classes;
 }
+
+//tested
 //sletter klassen
 function stopAttending($connection,$userid,$classid){
     $deleteAttends="delete from attends where classid='$classid' and userid='$userid'";
@@ -549,9 +561,11 @@ function displayQuestionsInQuiz($connection,$quizName){
 function showClasses($connection,$userid){
 $showClasses = "SELECT * FROM class WHERE creator='$userid'";
 $classes = mysqli_query ( $connection, $showClasses ) or die ( mysqli_error ( $connection ) );
-mysqli_close();
+//mysqli_close();
 return $classes;
 }
+
+//tested
 //lager ny klasse
 function makeClass($connection,$userid,$classname){
     $makeClass = "INSERT INTO class(classname, creator) values('$classname','$userid')";
