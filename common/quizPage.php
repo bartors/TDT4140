@@ -36,7 +36,7 @@ function popQuiz($connection, $currQuiz)
 
     //Setter opp et array for de rette svarene
     //$corrAns = array();
-    $corrans = $_SESSION['corrAns'];
+    $corrAns = $_SESSION['corrAns'];
     $questionNumber = 1;
 
 
