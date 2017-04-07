@@ -229,6 +229,50 @@ function displayClassnameTest($className){
 	}
 }
 
+//test for å finne quizzer i klasse
+function showQuizesInClassTest($connection, $classname, $quizes){
+	global $numberOfSuccess;
+	$quizesInClass = showQuizes($connection, $classname);
+	$i = 0;
+    while ( $row = mysqli_fetch_array ( $quizesInClass ) ) {
+        if(!($row['name']===$quizes[$i])){
+            return "showQuizesInClassTest: false</br>";
+        }
+        $i++;
+    }
+    $numberOfSuccess++;
+    return "showQuizesInClassTest: true</br>";
+
+}
+
+//liste over quizer i et fag som brukes i showQuizesInClassTest
+$quizesInClassTest=array(
+        0=>'testquiz',
+        1=>'testquiz2',
+        2=>'testquiz3',
+        3=>'testquiz4',
+        4=>'Quiz'
+);
+
+//test for makeQuiz
+function makeQuizTest($connection, $quizName, $className){
+	global $numberOfSuccess;
+	makeQuiz($connection, $quizName, $className);
+	$showQuiz = "SELECT classname FROM class WHERE classname='$className'";
+	$result=mysqli_query($connection, $showQuiz);
+	while ($row = $result->fetch_assoc()) {
+		if($className==$row['classname']){
+			$numberOfSuccess++;
+	    	return "makeQuizTest: true</br>";
+		}
+		else{
+			return "makeQuizTest: false</br>";
+		}
+	}
+}
+
+
+
 //tester for coverage
 function test(){
 	global $numberOfSuccess;
@@ -270,7 +314,8 @@ function testRate($x, $y){
 		echo displayQuiznameTest('testName');
 		echo showClassesStudentTest($connection, '2', $studentClassArray);
 		echo displayClassnameTest('myClass');
-
+		echo showQuizesInClassTest($connection, 'myClass', $quizesInClassTest);
+		echo makeQuizTest($connection, 'testQuizNavn', 'TDT4140');
 		//echo test();
 
 		echo "<p>Full coverage: ".testRate($numberOfSuccess, $numberOfFunctions)."%</p>";
