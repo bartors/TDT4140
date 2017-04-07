@@ -378,11 +378,13 @@ function displayStatistics($connection,$classname){
 function displayClassname(){
     Echo'<h2>Teacher - '. $_SESSION['classname'].'</h2>';
 }
+
+
+//tested
 //finner quizzer i klasse
 function showQuizes($connection, $classname) {
     $showQuizes = "SELECT qid,name,active from quiz WHERE classid=(SELECT classid from class where classname='$classname')";
     $quizes = mysqli_query ( $connection, $showQuizes ) or die ( mysqli_error ( $connection ) );
-    mysqli_close ();
     return $quizes;
 }
 //skriver ut quizzer 
@@ -409,13 +411,18 @@ function displayQuizes($count,$quizes){
         echo "Du har ingen quizer.</br>";
     }
 }
+
+//tested
 // lager en quiz
 function makeQuiz($connection, $quizName, $classname) {
     $createQuiz = "INSERT INTO quiz (classid,name,active) values ((SELECT classid from class where classname='$classname'),'$quizName',0)";
     $result = mysqli_query ( $connection, $createQuiz ) or die ( mysqli_error ( $connection ) );
-    mysqli_close ();
-    header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
+    //kommenterer ut neste linje for testing, skal ikke sendes til ny side
+    //header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
+
 }
+
+
 //sletter en quiz
 function deleteQuiz($connection, $qid) {
     $deleteHasQuestions = "delete from hasQuestions where quizid='$qid'";
@@ -560,6 +567,7 @@ function displayQuestionsInQuiz($connection,$quizName){
     }
     
 }
+//tested
 //henter klasser
 function showClasses($connection,$userid){
 $showClasses = "SELECT * FROM class WHERE creator='$userid'";
@@ -575,6 +583,8 @@ function makeClass($connection,$userid,$classname){
     return mysqli_query ( $connection, $makeClass );
     mysqli_close();
 }
+
+
 //deaktiverer et fag
 function deactivateClass($connection,$classID){
     $deleteCourse="UPDATE class SET teacherDeleted = 1 WHERE classid = $classID;";
