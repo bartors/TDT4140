@@ -138,7 +138,9 @@ $classes=array(
         12=>'klasa13',
         13=>'klasa14',
         14=>'testquiz',
-        15=>'userTest'  
+        15=>'userTest',
+		16=>'dsada',
+		17=>'adsdsadsa'
 );
 
 function ShowQuizTest($connection, $qid, $quizname){
@@ -271,8 +273,41 @@ function makeQuizTest($connection, $quizName, $className){
 	}
 }
 
+//test for deactivateClass
 
+function deactivateClassTest($connection,$active,$classID){
+	global $numberOfSuccess;
+	deactivateClass($connection, $classID);
+	$query="SELECT * from class where classid=$classID";
+	$result=mysqli_query($connection, $query)or die(mysqli_error($connection));
+	$row=mysqli_fetch_array($result);
+	if($row['teacherDeleted']==$active){
+		$numberOfSuccess++;
+		return "deactivateClassTest: true</br>";
+	}
+	return "deactivateClassTest: false</br>";
+}
 
+// test for activateQuiz without header and without post-variables
+//TODO
+//sjekke datomerkinga på aktiverte quizer
+function activateQuizTest($connection,$qid){
+	global $numberOfSuccess;
+	$query="SELECT * from quiz where qid=$qid";
+	$result=mysqli_query($connection, $query)or die(mysqli_error($connection));
+	$row=mysqli_fetch_array($result);
+	$status=$row['active'];
+	unset($row);
+	activateQuiz($connection, $qid, $status);
+	$query="SELECT * from quiz where qid=$qid";
+	$result=mysqli_query($connection, $query)or die(mysqli_error($connection));
+	$row=mysqli_fetch_array($result);
+	if($row['active']!=$status){
+		$numberOfSuccess++;
+		return "activateQuizTest: true</br>";
+	}
+	return "activateQuizTest: false</br>";
+}
 //tester for coverage
 function test(){
 	global $numberOfSuccess;
@@ -316,6 +351,8 @@ function testRate($x, $y){
 		echo displayClassnameTest('myClass');
 		echo showQuizesInClassTest($connection, 'myClass', $quizesInClassTest);
 		echo makeQuizTest($connection, 'testQuizNavn', 'TDT4140');
+		echo deactivateClassTest($connection, 1, '26');
+		echo activateQuizTest($connection, 2);
 		//echo test();
 
 		echo "<p>Full coverage: ".testRate($numberOfSuccess, $numberOfFunctions)."%</p>";

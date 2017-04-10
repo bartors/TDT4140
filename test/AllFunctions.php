@@ -434,9 +434,9 @@ function deleteQuiz($connection, $qid) {
     header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
 }
 // Gjør en quiz live
-function activateQuiz($connection, $qid, $status) {
-    $qiz = $_POST ['activQid'];
-    $status = $_POST ['activStat'];
+function activateQuiz($connection, $qiz, $status) {
+   // $qiz = $_POST ['activQid'];
+    //$status = $_POST ['activStat'];
     if ($status == 1) {
         $activateQuiz = "update quiz set active=0 where qid='$qiz' ";
     } else {
@@ -445,8 +445,8 @@ function activateQuiz($connection, $qid, $status) {
         $activateQuiz = "update quiz set active=1, activDate='$date' where qid='$qiz' ";
     }
     $result = mysqli_query ( $connection, $activateQuiz ) or die ( mysqli_error ( $connection ) );
-    mysqli_close ();
-    header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
+  //  mysqli_close ();
+    //header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
 }
 //lager et spørsmål og lagrer i database
 function makeQuestion($connection,$qid,$classname,$question,$a,$b,$c,$d,$ans,$topic){
@@ -589,6 +589,6 @@ function makeClass($connection,$userid,$classname){
 function deactivateClass($connection,$classID){
     $deleteCourse="UPDATE class SET teacherDeleted = 1 WHERE classid = $classID;";
     $result = mysqli_query ( $connection, $deleteCourse ) or die ( mysqli_error ( $connection ) );
-    mysqli_close();
+   // mysqli_close();
 }
 ?>
