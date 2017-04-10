@@ -160,7 +160,7 @@ if(isset($_POST['delete'])){
 					<form class="form-signin" method="POST">
 					<div class="panel-body">
 						<input class="addCourseInput" type="text" name="classname"
-							placeholder="Course name">&nbsp
+							placeholder="Course name" required>&nbsp
 						<button class="btn btn-default" type="submit">Create course</button>
 						<?php if(isset($fmsg)){ ?><div class="alert alert-danger" role="alert"> <?php echo $fmsg; ?> </div><?php }?>
 					</div></form>

@@ -148,7 +148,7 @@ if(isset($_POST['delete'])){
 						<form class='form-signin' method='POST'>
 						<?php if(isset($fmsg)){ ?><div class="alert alert-danger" role="alert"> <?php echo $fmsg; ?> </div><?php }?>
 								<input class="addCourseInput" type="text" name="classname"
-									placeholder="Course name">&nbsp
+									placeholder="Course name" required>&nbsp
 								<button class="btn btn-default" type="submit"
 									style="height: 30px;">Add course</button></form>
 							</div>
