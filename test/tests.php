@@ -173,9 +173,9 @@ function displayActiveQuizesTest($connection, $classname, $quizArray){
 
 //array for showActiveQuizesTest
 $quizArray=array(
-        0=>'testquiz',
-        1=>'testquiz4',
-        2=>'testquiz2'
+        0=>'testquiz2',
+        1=>'testquiz',
+        2=>'testquiz4'
 );
 
 //displayQuizname test. Endrer logikken litt så vi får kjørt test på denne da den bare skriver ut <h2>'er
@@ -289,7 +289,6 @@ function deactivateClassTest($connection,$active,$classID){
 }
 
 // test for activateQuiz without header and without post-variables
-//TODO
 //sjekke datomerkinga på aktiverte quizer
 function activateQuizTest($connection,$qid){
 	global $numberOfSuccess;
@@ -298,15 +297,44 @@ function activateQuizTest($connection,$qid){
 	$row=mysqli_fetch_array($result);
 	$status=$row['active'];
 	unset($row);
-	activateQuiz($connection, $qid, $status);
+	$date=activateQuiz($connection, $qid, $status);
 	$query="SELECT * from quiz where qid=$qid";
 	$result=mysqli_query($connection, $query)or die(mysqli_error($connection));
 	$row=mysqli_fetch_array($result);
 	if($row['active']!=$status){
-		$numberOfSuccess++;
-		return "activateQuizTest: true</br>";
+		if($status==0){
+			if($date===$row['activDate']){
+				$numberOfSuccess++;
+				return "activateQuizTest: true</br>";
+			}else{
+				return "activateQuizTest: falsen</br>";
+			}
+			
+		}else{
+			$numberOfSuccess++;
+			return "activateQuizTest: true</br>";
+		}
+		
 	}
 	return "activateQuizTest: false</br>";
+}
+
+function deleteQuizTest($connection,$className,$quizName){
+	global $numberOfSuccess;
+	makeQuiz($connection, $quizName, $className);
+	$showQuizId="select * from quiz where name='$quizName'";
+	$result = mysqli_query ( $connection, $showQuizId ) or die ( mysqli_error ( $connection ) );
+	$row=mysqli_fech_array($result);
+	deleteQuiz($connection, $row['qid']);
+	$qid=$row['qid'];
+	$showQuizName="select name from quiz where qid='$qid'";
+	$result = mysqli_query ( $connection, $showQuizName ) or die ( mysqli_error ( $connection ) );
+	$count= mysqli_num_rows ( $result );
+	if($count>0){
+		return "activateQuizTest: false</br>";
+	}
+	$numberOfSuccess++;
+	return "activateQuizTest: true</br>";
 }
 //tester for coverage
 function test(){
@@ -352,7 +380,8 @@ function testRate($x, $y){
 		echo showQuizesInClassTest($connection, 'myClass', $quizesInClassTest);
 		echo makeQuizTest($connection, 'testQuizNavn', 'TDT4140');
 		echo deactivateClassTest($connection, 1, '26');
-		echo activateQuizTest($connection, 2);
+		echo activateQuizTest($connection, 7);
+		//echo deleteQuizTest($connection, 'klasa', 'deleteThisQuiz');
 		//echo test();
 
 		echo "<p>Full coverage: ".testRate($numberOfSuccess, $numberOfFunctions)."%</p>";
