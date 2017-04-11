@@ -433,18 +433,21 @@ function deleteQuiz($connection, $qid) {
     mysqli_close ();
     header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
 }
+//tested
 // Gjør en quiz live
 function activateQuiz($connection, $qiz, $status) {
    // $qiz = $_POST ['activQid'];
     //$status = $_POST ['activStat'];
+    $date=null;
     if ($status == 1) {
         $activateQuiz = "update quiz set active=0 where qid='$qiz' ";
     } else {
         date_default_timezone_set ( 'Europe/Oslo' );
-        $date = date ( 'Y-m-d H-i-s' );
+        $date = date ( 'Y-m-d H:i:s' );
         $activateQuiz = "update quiz set active=1, activDate='$date' where qid='$qiz' ";
     }
     $result = mysqli_query ( $connection, $activateQuiz ) or die ( mysqli_error ( $connection ) );
+    return $date;
   //  mysqli_close ();
     //header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
 }
@@ -584,7 +587,7 @@ function makeClass($connection,$userid,$classname){
     mysqli_close();
 }
 
-
+//tested
 //deaktiverer et fag
 function deactivateClass($connection,$classID){
     $deleteCourse="UPDATE class SET teacherDeleted = 1 WHERE classid = $classID;";
