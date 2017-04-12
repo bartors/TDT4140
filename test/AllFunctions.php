@@ -451,13 +451,14 @@ function activateQuiz($connection, $qiz, $status) {
   //  mysqli_close ();
     //header ( 'Location:coursePageTeacher.php?id=' . $_SESSION ['classname'] );
 }
+//tested
 //lager et spørsmål og lagrer i database
 function makeQuestion($connection,$qid,$classname,$question,$a,$b,$c,$d,$ans,$topic){
     $makeQuestion = "INSERT INTO questions(classid,question,A,B,C,D,Ans,tema) values((SELECT classid FROM class WHERE classname='$classname'),'$question','$a','$b','$c','$d','$ans','$topic') ";
     $putIntoQuiz = "INSERT INTO hasQuestions values($qid,(SELECT qid FROM questions WHERE question='$question')) ";
     $result = mysqli_query ( $connection, $makeQuestion) or die ( mysqli_error ( $connection ) );
-    $result = mysqli_query ( $connection, $putIntoQuiz) or die ( mysqli_error ( $connection ) );
-    header("Location:createQuiz.php?id=".$qid);
+    //$result = mysqli_query ( $connection, $putIntoQuiz) or die ( mysqli_error ( $connection ) );
+    //header("Location:createQuiz.php?id=".$qid);
 }
 //finner spørsmål
 function showQuestions($connection,$classname){
@@ -477,29 +478,31 @@ function getQuizInfo($connection,$qid){
         $quizName=$row['name'];
         return $quizName;
     }
-}
+}//tested
 //setter opp form for å legge til quiz fra høyre panel inn i quizen
 function addQuestion($connection,$questionId,$topic,$qid){
     $addToHasQuestions="INSERT INTO hasQuestions (Quizid, queid) VALUES ($qid, $questionId)";
     $result = mysqli_query ( $connection, $addToHasQuestions ) or die ( mysqli_error ( $connection ) );
-    mysqli_close();
-    header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
+    //mysqli_close();
+    //header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
 }
+//tested
 //setter opp form for å slette spørsmål fra question-table
 function deleteQuestion($connection,$qid,$topic,$questionId){
     $deleteQuestion="delete from questions where qid='$questionId'";
     $deleteFromHasquestions="delete from hasQuestions where queid='$questionId'";
     $result = mysqli_query ( $connection, $deleteFromHasquestions ) or die ( mysqli_error ( $connection ) );
     $result = mysqli_query ( $connection, $deleteQuestion ) or die ( mysqli_error ( $connection ) );
-    mysqli_close();
-    header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
+    //mysqli_close();
+    //header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
 }
+//tested
 //setter opp form for å slette spørsmål fra hasquestion-table
 function removeQuestion($connection,$qid,$topic,$questionId){
-    $deleteFromHasquestions="delete from hasQuestions where queid='$questionId'";
+    $deleteFromHasquestions="delete from hasQuestions where (queid='$questionId' and Quizid='$qid')";
     $result = mysqli_query ( $connection, $deleteFromHasquestions ) or die ( mysqli_error ( $connection ) );
-    mysqli_close();
-    header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
+    //mysqli_close();
+    //header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
 }
 //skriver ut questions
 function displayQuestions($connection,$topic,$classname,$qid){

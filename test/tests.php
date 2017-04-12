@@ -336,6 +336,71 @@ function deleteQuizTest($connection,$className,$quizName){
 	$numberOfSuccess++;
 	return "activateQuizTest: true</br>";
 }
+
+//test for å lage et spørsmål
+function makeQuestionTest($connection,$qid,$classname,$question,$a,$b,$c,$d,$ans,$topic){
+	global $numberOfSuccess;
+	makeQuestion($connection,$qid,$classname,$question,$a,$b,$c,$d,$ans,$topic);
+	$showQuestion = "SELECT question, A, B, C, D, Ans, tema FROM questions WHERE (classid =(SELECT classid FROM class WHERE classname = '$classname') AND question = '$question')";
+    $result=mysqli_query($connection, $showQuestion);
+    while ($row = $result->fetch_assoc()) {
+		if($question==$row['question'] && $a==$row['A'] && $b==$row['B'] && $c==$row['C'] && $d==$row['D'] && $ans==$row['Ans'] && $topic==$row['tema']){
+			$numberOfSuccess++;
+	    	return "makeQuestionTest: true</br>";
+		}
+		else{
+			return "makeQuestionTest: false</br>";
+		}
+	}
+}
+
+//test for å legge til spørsmål i en quiz
+function addQuestionTest($connection,$questionId,$topic,$qid){
+	global $numberOfSuccess;
+	addQuestion($connection,$questionId,$topic,$qid);
+	$checkIfAdded = "SELECT Quizid, queid FROM hasQuestions WHERE (Quizid='$qid' AND queid='$questionId')";
+    $result=mysqli_query($connection, $checkIfAdded);
+    while ($row = $result->fetch_assoc()) {
+		if($qid==$row['Quizid'] && $questionId==$row['queid']){
+			$numberOfSuccess++;
+	    	return "addQuestionTest: true</br>";
+		}
+		else{
+			return "addQuestionTest: false</br>";
+		}
+	}
+}
+
+//test for å slette spørsmål fra en quiz
+function removeQuestionTest($connection,$qid,$topic,$questionId){
+	global $numberOfSuccess;
+	removeQuestion($connection,$qid,$topic,$questionId);
+	$checkIfRemoved = "SELECT Quizid, queid FROM hasQuestions WHERE (Quizid='$qid' AND queid='$questionId')";
+    $result=mysqli_query($connection, $checkIfRemoved);
+    while ($row = $result->fetch_assoc()) {
+		return "removeQuestionTest: false</br>";
+	}
+	$numberOfSuccess++;
+	return "removeQuestionTest: true</br>";
+}
+
+//test for å slette et spørsmål helt
+function deleteQuestionTest($connection,$qid,$topic, $question){
+	global $numberOfSuccess;
+	makeQuestion($connection, $qid, 'testclass01', $question, 'er', 'et', 'test', 'sporsmal', 'for', 'test');
+	$questionId = "SELECT qid FROM questions WHERE question = '$question'";
+	deleteQuestion($connection,$qid,$topic,$questionId);
+	$checkIfDeleted = "SELECT qid FROM questions WHERE qid='$questionId'";
+    $result=mysqli_query($connection, $checkIfDeleted);
+    while ($row = $result->fetch_assoc()) {
+		return "deleteQuestionTest: false</br>";
+	}
+	$numberOfSuccess++;
+	return "deleteQuestionTest: true</br>";
+}
+
+
+
 //tester for coverage
 function test(){
 	global $numberOfSuccess;
@@ -381,6 +446,11 @@ function testRate($x, $y){
 		echo makeQuizTest($connection, 'testQuizNavn', 'TDT4140');
 		echo deactivateClassTest($connection, 1, '26');
 		echo activateQuizTest($connection, 7);
+		echo makeQuestionTest($connection, '137', 'testclass01', 'Dette', 'er', 'et', 'test', 'sporsmal', 'for', 'test');
+		echo addQuestionTest($connection, '112', 'test', '137');
+		echo removeQuestionTest($connection, '137', 'test' , '112');
+		echo deleteQuestionTest($connection, '137', 'test', `unikatododo`);
+
 		//echo deleteQuizTest($connection, 'klasa', 'deleteThisQuiz');
 		//echo test();
 
