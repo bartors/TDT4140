@@ -71,7 +71,7 @@ if(isset($_POST['delete'])){
 
 //setter opp form for å slette spørsmål fra hasquestion-table
 function removeQuestion($connection,$qid,$topic,$questionId){
-	$deleteFromHasquestions="delete from hasQuestions where queid='$questionId'";
+	$deleteFromHasquestions="delete from hasQuestions where (queid='$questionId' and Quizid='$qid')";
 	$result = mysqli_query ( $connection, $deleteFromHasquestions ) or die ( mysqli_error ( $connection ) );
 	mysqli_close();
 	header('Location:createQuiz.php?id='.$qid.'&topic='.$topic);
@@ -219,7 +219,7 @@ function displayQuestionsInQuiz($connection,$quizName){
 					<li class="#page-scroll"><a href="#"><?php echo "Profile: ".$username?></a>
 					
 					<li>
-                        <?php echo"<a href='../logout.php'>Log out</a>"?>
+                        <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
 				</ul>
 			</div>
