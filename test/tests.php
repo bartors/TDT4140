@@ -1,6 +1,7 @@
 <?php
 
 //hvis du vil sjekke errors(kommenter ut hvis ikke)
+//ini_set("memory_limit","3000M");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -13,7 +14,7 @@ include '../lib/security.php';
 include 'AllFunctions.php';
 
 $numberOfSuccess;
-$numberOfFunctions = 32;
+$numberOfFunctions = 35;
 
 function makeClassTest($connection, $userid, $className){
 	global $numberOfSuccess;
@@ -398,7 +399,33 @@ function deleteQuestionTest($connection,$qid,$topic, $question){
 	$numberOfSuccess++;
 	return "deleteQuestionTest: true</br>";
 }
-
+//tester for unautorized acces
+function checkSessionTest($variable){
+	global $numberOfSuccess;
+	if(checkSession($variable)){
+		$numberOfSuccess++;
+		return "checkSessionTest: true</br>";
+	}
+	return "checkSessionTest: false</br>";
+}
+//checks if any smart-ass student won't gain acces to teachers-page
+function checkTeacherTest($variable){
+	global $numberOfSuccess;
+	if(checkTeacher($variable)){
+		$numberOfSuccess++;
+		return "checkTeacherTest: true</br>";
+	}
+	return "checkTeacherTest: false</br>";
+}
+//checks if any smart-ass teacher won't gain acces to student-page
+function checkStudentTest($variable){
+	global $numberOfSuccess;
+	if(checkStudent($variable)){
+		$numberOfSuccess++;
+		return "checkStudentTest: true</br>";
+	}
+	return "checkStudentTest: false</br>";
+}
 
 
 //tester for coverage
@@ -450,6 +477,9 @@ function testRate($x, $y){
 		echo addQuestionTest($connection, '112', 'test', '137');
 		echo removeQuestionTest($connection, '137', 'test' , '112');
 		echo deleteQuestionTest($connection, '137', 'test', `unikatododo`);
+		echo checkSessionTest(NULL);
+		echo checkTeacherTest('S');
+		echo checkStudentTest('T');
 
 		//echo deleteQuizTest($connection, 'klasa', 'deleteThisQuiz');
 		//echo test();

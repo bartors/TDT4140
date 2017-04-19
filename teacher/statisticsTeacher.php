@@ -6,10 +6,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 */
-
 session_start();
-require '../connect.php';
 require '../lib/functions.php';
+checkSession($_SESSION['username']);
+//session_start();
+checkTeacher($_SESSION['role']);
+require '../connect.php';
+//require '../lib/functions.php';
 //setter lokale variabler utifraa session's variabler
 $username=$_SESSION['username'];
 $password=$_SESSION['password'];

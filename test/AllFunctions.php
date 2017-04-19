@@ -597,4 +597,26 @@ function deactivateClass($connection,$classID){
     $result = mysqli_query ( $connection, $deleteCourse ) or die ( mysqli_error ( $connection ) );
    // mysqli_close();
 }
+//tested
+//modified
+function checkSession($variable){
+	if(! isset($variable)){
+		return true;
+	}
+	return false;
+}
+//modified
+function checkTeacher($role){
+	if($role==='S'){
+		return true;;
+	}
+	return false;
+}
+//modified
+function checkStudent($role){
+	if($role==='T'){
+		return true;;
+	}
+	return false;
+}
 ?>
