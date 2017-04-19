@@ -1,5 +1,8 @@
 <?php
-session_start ();
+session_start();
+require '../lib/functions.php';
+checkSession($_SESSION['username']);
+//session_start ();
 require '../connect.php';
 require '../lib/security.php';
 

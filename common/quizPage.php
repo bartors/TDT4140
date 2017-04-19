@@ -1,5 +1,8 @@
 <?php
 session_start();
+require '../lib/functions.php';
+checkSession($_SESSION['username']);
+//session_start();
 require '../connect.php';
 ini_set('display_errors', 1);
 //setter lokale variabler utifraa session's variabler

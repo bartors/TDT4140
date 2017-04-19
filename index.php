@@ -69,7 +69,7 @@ function login($usrname,$pswrd){
 }
 
 function mainPageHeader(){
-	if ($_SESSION ['role'] == 'T') {
+	if ($_SESSION ['role'] === 'T') {
 		header ( 'Location:teacher/mainAsTeacher.php' );
 	} else {
 		header ( 'Location:student/mainAsStudent.php' );

@@ -74,4 +74,19 @@ function showQuiz($connection,$qid){
 	function displayQuizName($quizName){
 		echo "<h2>".$quizName."</h2>";
 	}
+	function checkSession($variable){
+		if(! isset($variable)){
+		header('Location:/../index.php');
+		}
+	}
+	function checkTeacher($role){
+		if($role==='S'){
+			header('Location:/../student/mainAsStudent.php');
+		}
+	}
+	function checkStudent($role){
+		if($role==='T'){
+			header('Location:/../teacher/mainAsTeacher.php');
+		}
+	}
 ?>
