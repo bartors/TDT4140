@@ -1,12 +1,11 @@
 <?php
-session_start();
-require '../lib/functions.php';
-checkSession($_SESSION['username']);
-//session_start();
-require '../connect.php';
-checkTeacher($_SESSION['role']);
 
-//require '../lib/functions.php';
+session_start();
+require '../connect.php';
+require '../lib/functions.php';
+require '../lib/security.php';
+checkSession($_SESSION['username']);
+checkTeacher($_SESSION['role']);
 //setter lokale variabler utifraa session's variabler
 $username=$_SESSION['username'];
 $password=$_SESSION['password'];

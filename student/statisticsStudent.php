@@ -1,12 +1,11 @@
 <?php
+
 session_start ();
-require '../lib/functions.php';
-checkSession($_SESSION['username']);
-
 require '../connect.php';
+require '../lib/functions.php';
+require '../lib/security.php';
+checkSession($_SESSION['username']);
 checkStudent($_SESSION['role']);
-
-//require '../lib/functions.php';
 // setter lokale variabler utifraa session's variabler
 $username = $_SESSION ['username'];
 $password = $_SESSION ['password'];
@@ -41,16 +40,16 @@ function studentStatistics($connection,$quizName,$userid){
 			if ($score['answer']==1) {
 				$totalCorrect++;
 				$totalQuestions++;
-				$grade = "<div style='color: green;'>";
+				$grade = "<div style='float: right; color: green;'>Correct</div>";
 			}
 			else {
 				$totalQuestions++;
-				$grade = "<div style='color: red;'>";
+				$grade = "<div style='float: right; color: red;'>Wrong</div>";
 			}
 		}
 	
 		foreach ($currQuestion as $key => $val) {
-			echo $grade.$i.". ".$val."</div>";
+			echo $i.". ".$val.$grade."</br>";
 		}
 		$i++;
 	}

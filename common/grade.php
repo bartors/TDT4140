@@ -1,10 +1,9 @@
 <?php
-session_start();
-require '../lib/functions.php';
-checkSession($_SESSION['username']);
 // Start the Session
-//session_start ();
+session_start ();
 require ('../connect.php');
+require '../lib/security.php';
+checkSession($_SESSION['username']);
 ini_set('display_errors', 1);
 
 
