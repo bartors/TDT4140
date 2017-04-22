@@ -72,4 +72,19 @@ $publicSalt = 'cluFlA6+i1zi_sI_';
  
  
  }
+ function checkSession($variable){
+  if(! isset($variable)){
+  header('Location:../index.php');
+  }
+  }
+  function checkTeacher($role){
+  if($role==='S'){
+  header('Location:../student/mainAsStudent.php');
+  }
+  }
+  function checkStudent($role){
+  if($role==='T'){
+  header('Location:../teacher/mainAsTeacher.php');
+  }
+  }
 ?>
