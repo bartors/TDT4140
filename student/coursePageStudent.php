@@ -77,7 +77,7 @@ function displayActiveQuizes($connection,$classname){
                         <a href="#page-top"></a>
                     </li>
                     <li class="#page-scroll">
-                        <a href="#"><?php echo "Profile: ".$username;?></a>
+                        <a href="../common/changePassword.php"><?php echo "Profile: ".$username;?></a>
                     <li>
                         <?php echo"<a href='../common/logout.php'>Log out</a>"?>
                     </li>
