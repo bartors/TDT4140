@@ -40,16 +40,16 @@ function studentStatistics($connection,$quizName,$userid){
 			if ($score['answer']==1) {
 				$totalCorrect++;
 				$totalQuestions++;
-				$grade = "<div style='float: right; color: green;'>Correct</div>";
+				$grade = "<div style='color: green;'>";
 			}
 			else {
 				$totalQuestions++;
-				$grade = "<div style='float: right; color: red;'>Wrong</div>";
+				$grade = "<div style='color: red;'>";
 			}
 		}
 	
 		foreach ($currQuestion as $key => $val) {
-			echo $i.". ".$val.$grade."</br>";
+			echo $grade.$i.". ".$val."</div>";
 		}
 		$i++;
 	}
