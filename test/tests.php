@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 
 session_start ();
 require '../connect.php';
-include '../lib/security.php';
+//include '../lib/security.php';
 //include "phpunit-6.0.10.phar";
 include 'AllFunctions.php';
 
@@ -254,7 +254,8 @@ $quizesInClassTest=array(
         1=>'testquiz2',
         2=>'testquiz3',
         3=>'testquiz4',
-        4=>'Quiz'
+        4=>'Quiz',
+        5=>'Lager meg en quiz jeg'
 );
 
 //test for makeQuiz
