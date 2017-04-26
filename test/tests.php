@@ -140,8 +140,9 @@ $classes=array(
         13=>'klasa14',
         14=>'testquiz',
         15=>'userTest',
-		16=>'dsada',
-		17=>'adsdsadsa'
+	16=>'dsada',
+	17=>'adsdsadsa',
+	18=>'Et fag'
 );
 
 function ShowQuizTest($connection, $qid, $quizname){
