@@ -117,9 +117,9 @@ if(isset($_POST['newEmail'])){
 							<div class="panel-body" style="line-height: 22px;">
 								<form class="form-signin" method="POST">
 									<div class="input-group">
-										<input type="text" name="newPass1" class="form-control" placeholder="New password" required></br>
-										<input type="text" name="newPass2" class="form-control" placeholder="Repeat new password" required></br>
-										<input type="text" name="oldPass" class="form-control" placeholder="Old password" required></br>
+										<input type="password" name="newPass1" class="form-control" placeholder="New password" required></br>
+										<input type="password" name="newPass2" class="form-control" placeholder="Repeat new password" required></br>
+										<input type="password" name="oldPass" class="form-control" placeholder="Old password" required></br>
 										<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>  Save changes</button>
 										<?php
 										if ($role == 'S') { ?>
@@ -141,7 +141,7 @@ if(isset($_POST['newEmail'])){
 							<form class="form-signin" method="POST">
 								<div class="input-group">
 									<input type="text" name="newEmail" class="form-control" placeholder="New email" required></br>
-									<input type="text" name="pass" class="form-control" placeholder="Enter your password" required></br>
+									<input type="password" name="pass" class="form-control" placeholder="Enter your password" required></br>
 									<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>  Save changes</button>
 									<?php
 									if ($role == 'S') { ?>
