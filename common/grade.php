@@ -71,12 +71,17 @@ function popAndGrade($connection, $role, $userid, $classname, $corrAns, $lastQui
                     $query = "INSERT INTO hasAnsweredQuestion (userid, qid, questid, answer) VALUES ($userid, $lastQuiz, ".$corrAns[$i][1].", 0)";
                     priorityChange($connection,($corrAns[$i][0] == $answer), $userid, $lastQuiz, $corrAns, $i);
                 }
-            }
             
             //Gjennomfører oppdatering
             mysqli_query($connection,$query);
             
         }
+    }
+    else{ 
+    	if ($corrAns[$i][0] == $answer) {
+    		$noOfCorrect++;
+    	}
+    }
     }
 
     echo "
