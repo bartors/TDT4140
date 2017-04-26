@@ -1,0 +1,72 @@
+CREATE DATABASE classmate;
+
+USE classmate;
+
+CREATE TABLE users(
+userid int AUTO_INCREMENT NOT NULL,
+username varchar(255) NOT NULL,
+email varchar(255) NOT NULL,
+password varchar(255) NOT NULL,
+role varchar(1) NOT NULL,
+salt1 varchar(255) NOT NULL,
+salt2 varcher(255) NOT NULL,
+UNIQUE KEY(email),
+UNIQUE KEY(username),
+PRIMARY KEY(userid))ENGINE=InnoDB;
+
+CREATE TABLE class(
+classid int AUTO_INCREMENT NOT NULL,
+classname varchar(255) NOT NULL,
+creator int NOT NULL,
+teacherDeleted bit(1) NOT NULL DEFAULT 0,
+UNIQUE KEY(classname),
+PRIMARY KEY(classid),
+FOREIGN KEY(creator) REFERENCES users(userid))ENGINE=InnoDB;
+
+CREATE TABLE attends(
+userid int NOT NULL,
+classid int NOT NULL,
+PRIMARY KEY(userid,classid),
+FOREIGN KEY(userid) REFERENCES users(userid),
+FOREIGN KEY(classid) REFERENCES class(classid))ENGINE=InnoDB;
+
+CREATE TABLE quiz(
+qid int AUTO_INCREMENT NOT NULL,
+classid int NOT NULL,
+name varchar(255) NOT NULL,
+active bit(1) NOT NULL DEFAULT 0,
+activDate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY(qid,classid),
+FOREIGN KEY(classid) REFERENCES class(classid))ENGINE=InnoDB;
+
+CREATE TABLE questions(
+qid int NOT NULL AUTO_INCREMENT,
+classid int NOT NULL,
+question varchar(255) NOT NULL,
+A varchar(255) NOT NULL,
+B varchar(255) NOT NULL,
+C varchar(255) NOT NULL,
+D varchar(255) NOT NULL,
+Ans varchar(255) NOT NULL,
+tema varchar(255) NOT NULL,
+PRIMARY KEY(qid,classid),
+FOREIGN KEY(classid) REFERENCES class(classid))ENGINE=InnoDB;
+
+CREATE TABLE hasQuestions(
+Quizid int NOT NULL,
+queid int NOT NULL,
+PRIMARY KEY(Quizid,queid),
+FOREIGN KEY(Quizid) REFERENCES quiz(qid),
+FOREIGN KEY(queid) REFERENCES questions(qid))ENGINE=InnoDB;
+
+CREATE TABLE hasAnsweredQuestion(
+userid int NOT NULL,
+qid int NOT NULL,
+questid int NOT NULL,
+answer bit(1) NOT NULL,
+priority tinyint NOT NULL DEFAULT 3,
+PRIMARY KEY(userid,qid,questid),
+FOREIGN KEY(userid) REFERENCES users(userid),
+FOREIGN KEY(qid) REFERENCES quiz(qid),
+FOREIGN KEY(questid) REFERENCES questions(qid))ENGINE=InnoDB;
+
